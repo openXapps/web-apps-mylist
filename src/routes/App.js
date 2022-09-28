@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 function App() {
   return (
     <Container>
-      <Typography>App Home</Typography>
+      <Typography variant="h4">App Home</Typography>
     </Container>
   );
 }
