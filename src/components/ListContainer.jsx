@@ -11,7 +11,7 @@ import Send from '@mui/icons-material/Send';
 
 function ListContainer() {
   return (
-    <Box sx={{ mt: 2 }}>
+    <Box sx={{ mt: 2, pl:1 }}>
       <Stack direction="row" alignItems="center" justifyContent="space-between">
         <Typography variant="h6">My shopping list</Typography>
         <Box>
