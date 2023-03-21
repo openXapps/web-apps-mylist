@@ -43,24 +43,14 @@ function ListContainer() {
   const [shoppingLists, setShoppingLists] = useState(initShoppingLists);
 
   const handleItemClick = (e) => {
-    console.log(e.target.dataset);
-    let newLists = [];
-    let newList = [];
+    let newLists = shoppingLists.map(v => v);
     let listId = 0;
     let itemId = 0;
     if (e.target.dataset.listId && e.target.dataset.itemId) {
       listId = Number(e.target.dataset.listId);
       itemId = Number(e.target.dataset.itemId);
-      newLists = shoppingLists.map((list, listIndex) => {
-        console.log(list, listIndex);
-        return (list);
-      })
-      newList = shoppingLists[listId].items.map((item, itemIndex) => {
-        console.log(item, itemIndex);
-        return (item)
-        // return (itemId === itemIndex ? { ...item, done: !item.done } : item);
-      });
-      // setShoppingLists(prevProp => { return ({ ...prevProp, }) });
+      newLists[listId].items[itemId].done = !newLists[listId].items[itemId].done;
+      setShoppingLists(newLists);
     }
   };
 
@@ -68,10 +58,11 @@ function ListContainer() {
     <>
       {
         shoppingLists.map((list, listIndex) => {
+          let a = list.items.length;
           return (
             <Box key={list.id} sx={{ mt: 1 }}>
               <Stack direction="row" alignItems="center" justifyContent="space-between">
-                <Typography variant="h6">{list.name}</Typography>
+                <Typography variant="body1">{`${list.name} (${1}/${a})`}</Typography>
                 <Box>
                   <IconButton>{list.inUse ? <KeyboardArrowDownIcon /> : <KeyboardArrowUp />}</IconButton>
                   <IconButton><Edit /></IconButton>
@@ -84,7 +75,9 @@ function ListContainer() {
                       <ListItem key={item.id} disableGutters disablePadding>
                         <ListItemButton onClick={handleItemClick} data-list-id={listIndex} data-item-id={itemIndex}>
                           <ListItemText primary={item.value} primaryTypographyProps={{ 'data-list-id': listIndex, 'data-item-id': itemIndex }} />
-                          <CheckIcon data-list-id={listIndex} data-item-id={itemIndex} color={item.done ? '' : 'disabled'} />
+                          {item.done && (
+                            <CheckIcon data-list-id={listIndex} data-item-id={itemIndex} />
+                          )}
                         </ListItemButton>
                       </ListItem>
                     );
