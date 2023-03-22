@@ -16,7 +16,7 @@ function Header() {
       <Container maxWidth="sm">
         <Toolbar disableGutters>
           <IconButton color="inherit" aria-label="home button"><Home /></IconButton>
-          <Typography variant="h6" sx={{ ml: 1, flexGrow: 1 }}>ShopIT</Typography>
+          <Typography variant="h6" sx={{ ml: 1, flexGrow: 1 }}>SmartSHOPPER</Typography>
           <IconButton color="inherit" aria-label="add list button"><Add /></IconButton>
           <IconButton color="inherit" aria-label="menu bar button"><Menu /></IconButton>
         </Toolbar>

@@ -1,6 +1,6 @@
-# OpenApps - ShopIT
+# OpenApps - SmartSHOPPER
 
-ShopIT is a [PWA](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app) pet project, that allows you to use a regular web app for creating and organizing a shopping list.
+SmartSHOPPER is a [PWA](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app) pet project, that allows you to use a regular web app for creating and organizing a shopping list.
 
 **Functionality highlights**
 * Create and organize reusable shopping list items.
@@ -10,7 +10,7 @@ ShopIT is a [PWA](https://facebook.github.io/create-react-app/docs/making-a-prog
 * Export and import your data as [JSON](https://www.json.org/).
 * Switch between light and dark mode.
 
-This web app is hosted at [OpenApps](https://www.openapps.co.za/apps/shopit/).
+This web app is hosted at [OpenApps](https://www.openapps.co.za/apps/smartshopper/).
 
 ## Getting Started
 

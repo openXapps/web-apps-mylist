@@ -1,8 +1,8 @@
 {
-  "name": "web-apps-shopit",
+  "name": "web-apps-smartshopper",
   "version": "0.1.0",
   "private": true,
-  "homepage": "/apps/shopit/",
+  "homepage": "/apps/smartshopper/",
   "dependencies": {
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",

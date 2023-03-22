@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+// MUI Components
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
@@ -8,36 +9,16 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import IconButton from '@mui/material/IconButton';
-import Edit from '@mui/icons-material/Edit';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUp from '@mui/icons-material/KeyboardArrowUp';
-import CheckIcon from '@mui/icons-material/Check';
 
-const initShoppingLists = [
-  {
-    id: '1',
-    name: 'Weekly food shopping',
-    inUse: true,
-    items: [
-      { id: '1.1', value: 'Bread', done: false },
-      { id: '1.2', value: 'Milk', done: false },
-      { id: '1.3', value: 'Carrots', done: false },
-      { id: '1.4', value: 'Apples', done: true },
-      { id: '1.5', value: 'Meat', done: false },
-    ]
-  },
-  {
-    id: '2',
-    name: 'Hardware store',
-    inUse: true,
-    items: [
-      { id: '2.1', value: 'Hammer', done: false },
-      { id: '2.2', value: 'Generator', done: false },
-      { id: '2.3', value: 'Paint', done: false },
-      { id: '2.4', value: 'Paint brushes', done: false },
-    ]
-  }
-];
+// MUI Icons
+import EditIcon from '@mui/icons-material/Edit';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import CheckIcon from '@mui/icons-material/Check';
+import PriceCheckIcon from '@mui/icons-material/PriceCheck';
+
+// Remove this mock later when IndexedDB is active
+import { initShoppingLists } from '../services/initload';
 
 function ListContainer() {
   const [shoppingLists, setShoppingLists] = useState(initShoppingLists);
@@ -64,22 +45,25 @@ function ListContainer() {
               <Stack direction="row" alignItems="center" justifyContent="space-between">
                 <Typography variant="body1">{`${list.name} (${1}/${a})`}</Typography>
                 <Box>
-                  <IconButton>{list.inUse ? <KeyboardArrowDownIcon /> : <KeyboardArrowUp />}</IconButton>
-                  <IconButton><Edit /></IconButton>
+                  <IconButton>{list.inUse ? <KeyboardArrowDownIcon /> : <KeyboardArrowUpIcon />}</IconButton>
+                  <IconButton><EditIcon /></IconButton>
                 </Box>
               </Stack>
               {list.inUse && (
                 <List sx={{ mt: 1, bgcolor: 'background.paper' }}>
                   {shoppingLists[listIndex].items.map((item, itemIndex) => {
                     return (
-                      <ListItem key={item.id} disableGutters disablePadding>
-                        <ListItemButton onClick={handleItemClick} data-list-id={listIndex} data-item-id={itemIndex}>
-                          <ListItemText primary={item.value} primaryTypographyProps={{ 'data-list-id': listIndex, 'data-item-id': itemIndex }} />
-                          {item.done && (
-                            <CheckIcon data-list-id={listIndex} data-item-id={itemIndex} />
-                          )}
-                        </ListItemButton>
-                      </ListItem>
+                      <Stack key={item.id} direction="row">
+                      <IconButton href={"https://www.google.com/search?q=" + item.value + "+price&safe=active&source=lnms&tbm=shop"}><PriceCheckIcon /></IconButton>
+                        <ListItem disableGutters disablePadding>
+                          <ListItemButton onClick={handleItemClick} data-list-id={listIndex} data-item-id={itemIndex}>
+                            <ListItemText primary={item.value} primaryTypographyProps={{ 'data-list-id': listIndex, 'data-item-id': itemIndex }} />
+                            {item.done && (
+                              <CheckIcon data-list-id={listIndex} data-item-id={itemIndex} />
+                            )}
+                          </ListItemButton>
+                        </ListItem>
+                      </Stack>
                     );
                   })}
                 </List>

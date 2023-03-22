@@ -20,7 +20,7 @@ function App() {
   // const appTheme = createTheme(appState.themeIsDark ? dark : light);
   const appTheme = createTheme(dark);
   // const home = '/';
-  const home = '/apps/shopit';
+  const home = '/apps/smartshopper';
 
   return (
     <ThemeProvider theme={appTheme}>
