@@ -14,6 +14,7 @@ import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import CheckIcon from '@mui/icons-material/Check';
 import PriceCheckIcon from '@mui/icons-material/PriceCheck';
 
@@ -25,14 +26,27 @@ function ListContainer() {
 
   const handleItemClick = (e) => {
     let newLists = shoppingLists.map(v => v);
-    let listId = 0;
-    let itemId = 0;
-    if (e.target.dataset.listId && e.target.dataset.itemId) {
-      listId = Number(e.target.dataset.listId);
-      itemId = Number(e.target.dataset.itemId);
-      newLists[listId].items[itemId].done = !newLists[listId].items[itemId].done;
-      setShoppingLists(newLists);
-    }
+    let listId = Number(e.currentTarget.dataset.listId);
+    let itemId = Number(e.currentTarget.dataset.itemId);
+    newLists[listId].items[itemId].done = !newLists[listId].items[itemId].done;
+    setShoppingLists(newLists);
+  };
+
+  const handleShowHideListClick = (e) => {
+    let newLists = shoppingLists.map(v => v);
+    let listId = Number(e.currentTarget.dataset.listId);
+    newLists[listId].inUse = !newLists[listId].inUse;
+    setShoppingLists(newLists);
+  };
+
+  const handleResetListClick = (e) => {
+    let newLists = shoppingLists.map(v => v);
+    let listId = Number(e.currentTarget.dataset.listId);
+    // console.log(shoppingLists[listId].items);
+    newLists[listId].items = shoppingLists[listId].items.map(v => {
+      return { ...v, done: false };
+    });
+    setShoppingLists(newLists);
   };
 
   return (
@@ -43,10 +57,16 @@ function ListContainer() {
           return (
             <Box key={list.id} sx={{ mt: 1 }}>
               <Stack direction="row" alignItems="center" justifyContent="space-between">
-                <Typography variant="body1">{`${list.name} (${1}/${a})`}</Typography>
+                <Typography
+                  // variant="body1"
+                >{`${list.name} (${shoppingLists[listIndex].items.filter(e => e.done).length}/${a})`}</Typography>
                 <Box>
-                  <IconButton>{list.inUse ? <KeyboardArrowDownIcon /> : <KeyboardArrowUpIcon />}</IconButton>
-                  <IconButton><EditIcon /></IconButton>
+                  <IconButton data-list-id={listIndex} onClick={handleResetListClick}><RestartAltIcon /></IconButton>
+                  <IconButton
+                    data-list-id={listIndex}
+                    onClick={handleShowHideListClick}
+                  >{list.inUse ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}</IconButton>
+                  <IconButton data-id={list.id} onClick={() => console.log('Edit')}><EditIcon /></IconButton>
                 </Box>
               </Stack>
               {list.inUse && (
@@ -54,13 +74,15 @@ function ListContainer() {
                   {shoppingLists[listIndex].items.map((item, itemIndex) => {
                     return (
                       <Stack key={item.id} direction="row">
-                      <IconButton href={"https://www.google.com/search?q=" + item.value + "+price&safe=active&source=lnms&tbm=shop"}><PriceCheckIcon /></IconButton>
+                        <IconButton
+                          href={"https://www.google.com/search?q=" + item.value + "+price&safe=active&source=lnms&tbm=shop"}
+                          target="_blank"
+                          rel="noopener"
+                        ><PriceCheckIcon /></IconButton>
                         <ListItem disableGutters disablePadding>
                           <ListItemButton onClick={handleItemClick} data-list-id={listIndex} data-item-id={itemIndex}>
-                            <ListItemText primary={item.value} primaryTypographyProps={{ 'data-list-id': listIndex, 'data-item-id': itemIndex }} />
-                            {item.done && (
-                              <CheckIcon data-list-id={listIndex} data-item-id={itemIndex} />
-                            )}
+                            <ListItemText primary={item.value} />
+                            {item.done && <CheckIcon />}
                           </ListItemButton>
                         </ListItem>
                       </Stack>

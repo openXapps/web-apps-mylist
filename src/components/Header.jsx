@@ -1,11 +1,14 @@
+// MUI Components
 import AppBar from '@mui/material/AppBar';
 import Container from '@mui/material/Container';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
-import Home from '@mui/icons-material/Home';
-import Menu from '@mui/icons-material/Menu';
-import Add from '@mui/icons-material/Add';
+
+// MUI Icons
+import HomeIcon from '@mui/icons-material/Home';
+import MenuIcon from '@mui/icons-material/Menu';
+import AddIcon from '@mui/icons-material/Add';
 
 // import { env } from '../services/environment';
 
@@ -15,10 +18,10 @@ function Header() {
     <AppBar color="inherit">
       <Container maxWidth="sm">
         <Toolbar disableGutters>
-          <IconButton color="inherit" aria-label="home button"><Home /></IconButton>
+          <IconButton color="inherit" aria-label="home button"><HomeIcon /></IconButton>
           <Typography variant="h6" sx={{ ml: 1, flexGrow: 1 }}>SmartSHOPPER</Typography>
-          <IconButton color="inherit" aria-label="add list button"><Add /></IconButton>
-          <IconButton color="inherit" aria-label="menu bar button"><Menu /></IconButton>
+          <IconButton color="inherit" aria-label="add list button"><AddIcon /></IconButton>
+          <IconButton color="inherit" aria-label="menu bar button"><MenuIcon /></IconButton>
         </Toolbar>
       </Container>
     </AppBar>
