@@ -1,4 +1,5 @@
 // import { useContext } from 'react';
+import { useContext } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 // Material UI
@@ -7,8 +8,8 @@ import { ThemeProvider } from '@mui/material/styles';
 import { createTheme } from '@mui/material/styles';
 
 // App assets
-// import { AppContext } from './context/AppStore';
-// import light from './themes/light';
+import { AppContext } from '../context/AppStore';
+import light from '../themes/light';
 import dark from '../themes/dark';
 
 // App routes
@@ -18,9 +19,8 @@ import Edit from './Edit';
 import NoPage from './NoPage';
 
 function App() {
-  // const [appState] = useContext(AppContext);
-  // const appTheme = createTheme(appState.themeIsDark ? dark : light);
-  const appTheme = createTheme(dark);
+  const [appState] = useContext(AppContext);
+  const appTheme = createTheme(appState.themeIsDark ? dark : light);
   // const home = '/';
   const home = '/apps/smartshopper';
 

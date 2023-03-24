@@ -4,10 +4,12 @@ import App from './routes/App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
 
+import AppStore from './context/AppStore';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <AppStore><App /></AppStore>
   </React.StrictMode>
 );
 
