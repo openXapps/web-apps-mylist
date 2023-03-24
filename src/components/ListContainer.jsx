@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // MUI Components
 import Box from '@mui/material/Box';
@@ -22,6 +23,7 @@ import PriceCheckIcon from '@mui/icons-material/PriceCheck';
 import { initShoppingLists } from '../services/initload';
 
 function ListContainer() {
+  const rrNavigate = useNavigate();
   const [shoppingLists, setShoppingLists] = useState(initShoppingLists);
 
   const handleItemClick = (e) => {
@@ -42,7 +44,6 @@ function ListContainer() {
   const handleResetListClick = (e) => {
     let newLists = shoppingLists.map(v => v);
     let listId = Number(e.currentTarget.dataset.listId);
-    // console.log(shoppingLists[listId].items);
     newLists[listId].items = shoppingLists[listId].items.map(v => {
       return { ...v, done: false };
     });
@@ -58,7 +59,7 @@ function ListContainer() {
             <Box key={list.id} sx={{ mt: 1 }}>
               <Stack direction="row" alignItems="center" justifyContent="space-between">
                 <Typography
-                  // variant="body1"
+                // variant="body1"
                 >{`${list.name} (${shoppingLists[listIndex].items.filter(e => e.done).length}/${a})`}</Typography>
                 <Box>
                   <IconButton data-list-id={listIndex} onClick={handleResetListClick}><RestartAltIcon /></IconButton>
@@ -66,7 +67,7 @@ function ListContainer() {
                     data-list-id={listIndex}
                     onClick={handleShowHideListClick}
                   >{list.inUse ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}</IconButton>
-                  <IconButton data-id={list.id} onClick={() => console.log('Edit')}><EditIcon /></IconButton>
+                  <IconButton onClick={() => rrNavigate('/edit')}><EditIcon /></IconButton>
                 </Box>
               </Stack>
               {list.inUse && (
