@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLiveQuery } from 'dexie-react-hooks';
 
 // MUI Components
 import Box from '@mui/material/Box';
@@ -19,12 +20,22 @@ import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import CheckIcon from '@mui/icons-material/Check';
 import PriceCheckIcon from '@mui/icons-material/PriceCheck';
 
+// App Specific
+import { AppContext } from '../context/AppStore';
+
 // Remove this mock later when IndexedDB is active
 import { initShoppingLists } from '../services/initload';
 
 function ListContainer() {
+  const [{ db }, _] = useContext(AppContext);
+  const lists = useLiveQuery(() => db.list);
+  const items = useLiveQuery(() => db.item);
   const rrNavigate = useNavigate();
   const [shoppingLists, setShoppingLists] = useState(initShoppingLists);
+
+  console.log(db);
+  console.log(lists);
+  console.log(items);
 
   const handleItemClick = (e) => {
     let newLists = shoppingLists.map(v => v);

@@ -8,53 +8,50 @@ import { validateDB } from '../services/dbops';
 
 // https://reactjs.org/docs/context.html
 
-/**
- * Load IndexedDB instance
- */
+// Load IndexedDB instance
 const db = new Dexie('SmartShopper');
-db.open()
-  .then(db => {
-    validateDB(db);
-  })
-  .catch('NoSuchDatabaseError', e => {
-    // Database with that name did not exist
-    console.error('Database not found: ', e.message);
-    console.error('Creating version 1...');
-    db.version(1).stores({
-      list: '++id',
-      item: '++id'
+
+// Initialize database from IDB instance
+db.version(1).stores({
+  list: '++id',
+  item: '++id, listId'
+});
+
+// Log some IDB info to console
+validateDB(db);
+
+// Check for initial use and create sample data
+db.list.count().then(docCount => {
+  console.log(docCount)
+  if (docCount === 0) {
+    db.list.add({ listName: 'Weekly food shopping', inUse: true }).then(listId => {
+      console.log(listId);
+      db.item.add({ listId: listId, itemName: 'Brown bread', done: false });
+      db.item.add({ listId: listId, itemName: 'Fresh milk', done: false });
+      db.item.add({ listId: listId, itemName: 'Carrots', done: false });
+      db.item.add({ listId: listId, itemName: 'Lamb chops', done: false });
     });
-    db.list.add({ listName: 'Weekly food shopping', inUse: false })
-      .then(id => {
-        db.item.add({ listId: id, itemName: 'Brown bread', done: false });
-        db.item.add({ listId: id, itemName: 'Fresh milk', done: false });
-        db.item.add({ listId: id, itemName: 'Carrots', done: false });
-        db.item.add({ listId: id, itemName: 'Lamb chops', done: false });
-      })
-  }).catch(Error, e => {
-    // Any other error derived from standard Error
-    console.error("Error: " + e.message);
-  }).catch(e => {
-    // Other error such as a string was thrown
-    console.error(e);
-  });
+    db.list.add({ listName: 'Hardware store', inUse: false }).then(listId => {
+      console.log(listId);
+      db.item.add({ listId: listId, itemName: 'Hammer', done: false });
+      db.item.add({ listId: listId, itemName: '5kWh Generator', done: false });
+      db.item.add({ listId: listId, itemName: 'Roof paint', done: false });
+      db.item.add({ listId: listId, itemName: 'Paint brush', done: false });
+    });
+  }
+}).catch(error => {
+  console.log(error);
+});
 
 /**
- * Initial state
- * Loads default password data on first use
- */
-// initialUse();
-
-/**
- * Setting default application context
+ * Set initial application context
  */
 const contextData = {
-  themeIsDark: true
+  themeIsDark: true,
+  db: db
 };
 
-/**
- * Create application context object
- */
+// Create application context object
 export const AppContext = createContext(contextData);
 
 /**
