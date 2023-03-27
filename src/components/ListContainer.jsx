@@ -27,9 +27,9 @@ import { AppContext } from '../context/AppStore';
 import { initShoppingLists } from '../services/initload';
 
 function ListContainer() {
-  const [{ db }, _] = useContext(AppContext);
-  const lists = useLiveQuery(() => db.list);
-  const items = useLiveQuery(() => db.item);
+  const [{ db }] = useContext(AppContext);
+  const lists = useLiveQuery(() => db.list, []);
+  const items = useLiveQuery(() => db.item, []);
   const rrNavigate = useNavigate();
   const [shoppingLists, setShoppingLists] = useState(initShoppingLists);
 
