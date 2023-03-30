@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLiveQuery } from 'dexie-react-hooks';
+import Dexie from 'dexie';
 
 // MUI Components
 import Box from '@mui/material/Box';
@@ -29,11 +30,6 @@ function ListContainer() {
   const items = useLiveQuery(() => db.item.toArray(), []);
   const rrNavigate = useNavigate();
 
-  console.log('Rendering...');
-  // console.log(db);
-  // lists && console.log('lists: ', lists);
-  // items && console.log('items: ', items);
-
   const handleItemClick = (itemId, state) => {
     db.item.update(itemId, { 'done': !state });
   };
@@ -43,14 +39,13 @@ function ListContainer() {
   };
 
   const handleResetListClick = (listId) => {
-    console.log(listId);
-
-    // let newLists = shoppingLists.map(v => v);
-    // let listId = Number(e.currentTarget.dataset.listId);
-    // newLists[listId].items = shoppingLists[listId].items.map(v => {
-    //   return { ...v, done: false };
-    // });
-    // setShoppingLists(newLists);
+    db.transaction("rw", db.item, () => {
+      db.item.where('listId').equals(listId).modify({ done: false });
+    }).catch(Dexie.ModifyError, error => {
+      console.error(error.failures.length + ' items failed to modify');
+    }).catch(error => {
+      console.error('Generic error: ' + error);
+    });
   };
 
   return lists && items && (
@@ -67,7 +62,7 @@ function ListContainer() {
                 <IconButton
                   onClick={() => handleShowHideListClick(list.id, list.inUse)}
                 >{list.inUse ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}</IconButton>
-                <IconButton onClick={() => rrNavigate('/edit')}><EditIcon /></IconButton>
+                <IconButton onClick={() => rrNavigate('/edit/' + list.id)}><EditIcon /></IconButton>
               </Box>
             </Stack>
             {list.inUse && (
