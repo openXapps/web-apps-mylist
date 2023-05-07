@@ -65,7 +65,7 @@ function Header() {
             <Box display="flex" flexDirection="row">
               <IconButton
                 color="inherit"
-                onClick={() => { rrNavigate('/edit/new') }}
+                onClick={() => { rrNavigate('/new') }}
               ><AddCircleIcon /></IconButton>
               <IconButton
                 color="inherit"

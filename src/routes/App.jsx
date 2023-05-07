@@ -15,7 +15,8 @@ import dark from '../themes/dark';
 // App routes
 import Header from '../components/Header';
 import Home from './Home';
-import Edit from './Edit';
+import EditList from './EditList';
+import NewList from './NewList';
 import NoPage from './NoPage';
 
 function App() {
@@ -31,10 +32,8 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/edit" element={<Edit />}>
-            <Route path=":listId" element={<Edit />} />
-            <Route path="new" element={<Edit />} />
-          </Route>
+          <Route path="/edit/:listId" element={<EditList />} />
+          <Route path="/new" element={<NewList />} />
           {/* <Route path="/settings" element={<Settings />} />
           <Route path="/download" element={<Download />} />
           <Route path="/upload" element={<Upload />} /> */}
