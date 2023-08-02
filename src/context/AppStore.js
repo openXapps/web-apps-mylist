@@ -51,7 +51,7 @@ const contextData = {
   db: db
 };
 
-// Create application context object
+// Create application context provider object
 export const AppContext = createContext(contextData);
 
 /**
