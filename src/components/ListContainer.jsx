@@ -69,7 +69,7 @@ function ListContainer() {
               <List sx={{ mt: 1, bgcolor: 'background.paper' }}>
                 {items.map((item) => {
                   return item.listId === list.id && (
-                    <Stack key={item.id} direction="row">
+                    <Stack key={item.id} direction="row" alignItems="center">
                       <IconButton
                         href={"https://www.google.com/search?q=" + item.itemName + "+price&safe=active&source=lnms&tbm=shop"}
                         target="_blank"

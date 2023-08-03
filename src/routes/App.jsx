@@ -17,6 +17,9 @@ import Header from '../components/Header';
 import Home from './Home';
 import EditList from './EditList';
 import NewList from './NewList';
+import Settings from './Settings';
+import Download from './Download';
+import Upload from './Upload';
 import NoPage from './NoPage';
 
 function App() {
@@ -34,9 +37,9 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/edit/:listId" element={<EditList />} />
           <Route path="/new" element={<NewList />} />
-          {/* <Route path="/settings" element={<Settings />} />
+          <Route path="/settings" element={<Settings />} />
           <Route path="/download" element={<Download />} />
-          <Route path="/upload" element={<Upload />} /> */}
+          <Route path="/upload" element={<Upload />} />
           <Route path="*" element={<NoPage />} />
         </Routes>
       </BrowserRouter>

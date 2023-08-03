@@ -19,7 +19,7 @@ import Button from '@mui/material/Button';
 import SaveIcon from '@mui/icons-material/Save';
 import Delete from '@mui/icons-material/Delete';
 import Edit from '@mui/icons-material/Edit';
-import Add from '@mui/icons-material/Add';
+import Clear from '@mui/icons-material/Clear';
 
 // App Specific
 import { AppContext } from '../context/AppStore';
@@ -42,58 +42,55 @@ function EditList() {
     return () => true;
   }, [lists])
 
-  const handleEditActionButtons = (e) => {
+  const handleListEditButton = (e) => {
     e.preventDefault();
+    if (listName !== '') {
+      db.list.update(Number(listId), { listName: listName.trim() })
+        .then(id => { });
+    }
+  }
 
+  const handleItemEditButtons = (e, action) => {
+    e.preventDefault();
     if (refInputField.current.value !== '') {
       // Save action
       if (itemId > 0) {
-        // Update existing item here
         db.item.update(itemId, { itemName: itemName.trim() })
-          .then(id => { });
+          .then(id => {
+            setItemName('');
+            setItemId(0);
+          });
       }
       // New action
-      if (itemId === 0) {
-        // Add new item here
+      if (itemId === 0 && action === 'submit') {
         db.item.add({ listId: Number(listId), itemName: itemName.trim(), done: false })
-          .then(id => { refInputField.current.focus() });
+          .then(id => {
+            setItemName('');
+            setItemId(0);
+            refInputField.current.focus()
+          });
       }
-      // Clean-up
-      setItemName('');
-      setItemId(0);
-
-      // // Submit action
-      // if (action === 'submit') {
-      //   if (itemId > 0) {
-      //     // Update existing item here
-      //     db.item.update(itemId, { itemName: trim(itemName) })
-      //       .then(updated => {
-      //         console.log('Updated ', updated)
-      //         setItemName('');
-      //         setItemId(0);
-      //       });
-      //   } else {
-      //     // Add new item here
-      //     db.item.add({ listId: Number(listId), itemName: trim(itemName), done: false })
-      //       .then(added => {
-      //         console.log('Added ', added)
-      //         setItemName('');
-      //         setItemId(0);
-      //         refInputField.current.focus();
-      //       });
-      //   }
-      // }
+      // Clear action
+      if (action === 'clear') {
+        setItemName('');
+        setItemId(0);
+        refInputField.current.focus()
+      }
     }
   };
 
   const handleItemActionButtons = (action, id) => {
-    console.log(action, id);
+    // console.log(action, id);
     // Edit action
-    setItemId(id);
-    setItemName(getItem(items, id)[0].itemName);
-    refInputField.current.focus();
-
+    if (action === 'edit') {
+      setItemId(id);
+      setItemName(getItem(items, id)[0].itemName);
+      refInputField.current.focus();
+    }
     // Delete action
+    if (action === 'delete') {
+      db.item.delete(id);
+    }
   };
 
   return (
@@ -110,34 +107,36 @@ function EditList() {
           <IconButton
             sx={{ ml: 1 }}
             aria-label="save list name"
-            onClick={(e) => { }}
+            onClick={(e) => handleListEditButton(e)}
           ><SaveIcon /></IconButton>
         </Box>
-        <Paper sx={{ mt: 1, padding: 1 }}>
-          <Box
-            sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', my: 1 }}
-            component="form"
-            noValidate
-            autoComplete="off"
-            onSubmit={(e) => handleEditActionButtons(e)}
-          >
-            <TextField
-              inputRef={refInputField}
-              fullWidth
-              value={itemName}
-              onChange={(e) => setItemName(e.currentTarget.value)}
-            />
-            <IconButton
-              sx={{ ml: 1 }}
-              aria-label="update item name"
-              onClick={(e) => handleEditActionButtons(e)}
-            ><SaveIcon /></IconButton>
-            {/* <IconButton
-              aria-label="create new item"
-              onClick={(e) => handleEditActionButtons(e, 'new')}
-            ><Add /></IconButton> */}
-          </Box>
+        <Box
+          sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', my: 1 }}
+          component="form"
+          noValidate
+          autoComplete="off"
+          onSubmit={(e) => handleItemEditButtons(e, 'submit')}
+        >
+          <TextField
+            inputRef={refInputField}
+            fullWidth
+            label="Item Name"
+            InputLabelProps={{ shrink: true }}
+            value={itemName}
+            onChange={(e) => setItemName(e.currentTarget.value)}
+          />
+          <IconButton
+            sx={{ ml: 1 }}
+            aria-label="update item name"
+            onClick={(e) => handleItemEditButtons(e, 'submit')}
+          ><SaveIcon /></IconButton>
+          <IconButton
+            aria-label="clear item name"
+            onClick={(e) => handleItemEditButtons(e, 'clear')}
+          ><Clear /></IconButton>
+        </Box>
 
+        <Paper sx={{ mt: 1, padding: 1 }}>
           {items && (
             <List>
               {items.map((item) => {
