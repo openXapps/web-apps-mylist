@@ -25,14 +25,14 @@ import Clear from '@mui/icons-material/Clear';
 import { AppContext } from '../context/AppStore';
 import { getItem } from '../services/utilities';
 
-function EditList() {
+export default function EditList() {
   // const smallScreen = useMediaQuery(theme => theme.breakpoints.down('sm'));
   const rrNavigate = useNavigate();
   const refInputField = useRef(null);
   const { listId } = useParams();
   const [{ db }] = useContext(AppContext);
-  const lists = useLiveQuery(() => db.list.where('id').equals(listId ? Number(listId) : 0).toArray(), [listId]);
-  const items = useLiveQuery(() => db.item.where('listId').equals(listId ? Number(listId) : 0).toArray(), [listId]);
+  const lists = useLiveQuery(() => db.list.where('id').equals(listId ? parseInt(listId, 10) : 0).toArray(), [listId]);
+  const items = useLiveQuery(() => db.item.where('listId').equals(listId ? parseInt(listId, 10) : 0).reverse().toArray(), [listId]);
   const [listName, setListName] = useState('');
   const [itemName, setItemName] = useState('');
   const [itemId, setItemId] = useState(0);
@@ -45,7 +45,7 @@ function EditList() {
   const handleListEditButton = (e) => {
     e.preventDefault();
     if (listName !== '') {
-      db.list.update(Number(listId), { listName: listName.trim() })
+      db.list.update(parseInt(listId, 10), { listName: listName.trim() })
         .then(id => { });
     }
   }
@@ -63,7 +63,7 @@ function EditList() {
       }
       // New action
       if (itemId === 0 && action === 'submit') {
-        db.item.add({ listId: Number(listId), itemName: itemName.trim(), done: false })
+        db.item.add({ listId: parseInt(listId, 10), itemName: itemName.trim(), done: false })
           .then(id => {
             setItemName('');
             setItemId(0);
@@ -111,7 +111,7 @@ function EditList() {
           ><SaveIcon /></IconButton>
         </Box>
         <Box
-          sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', my: 1 }}
+          sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', mt: 2 }}
           component="form"
           noValidate
           autoComplete="off"
@@ -172,4 +172,3 @@ function EditList() {
   );
 }
 
-export default EditList;
