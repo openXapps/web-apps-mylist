@@ -1,14 +1,23 @@
 // IndexedDB utilities file
 
 /**
+ * IndexedDB stores
+ */
+export const dbStores = {
+  list: '++id, listName, listOrder',
+  item: '++id, listId, itemName, itemOrder'
+};
+
+/**
  * Empty shopping list model
  */
 export const emptyList = [
   {
     listName: '',
     inUse: false,
+    listOrder: 1,
     items: [
-      { listId: 0, itemName: '', done: false },
+      { listId: 0, itemName: '', itemOrder: 1, done: false },
     ]
   },
 ];
@@ -24,19 +33,19 @@ export function initLoad(db) {
   db.list.count().then(docCount => {
     // console.log(docCount)
     if (docCount === 0) {
-      db.list.add({ listName: 'Weekly food shopping', inUse: true }).then(listId => {
+      db.list.add({ listName: 'Weekly food shopping', inUse: true, listOrder: 1 }).then(listId => {
         // console.log(listId);
-        db.item.add({ listId: listId, itemName: 'Brown bread', done: false });
-        db.item.add({ listId: listId, itemName: 'Fresh milk', done: false });
-        db.item.add({ listId: listId, itemName: 'Carrots', done: false });
-        db.item.add({ listId: listId, itemName: 'Lamb chops', done: false });
+        db.item.add({ listId: listId, itemName: 'Brown bread', itemOrder: 1, done: false });
+        db.item.add({ listId: listId, itemName: 'Fresh milk', itemOrder: 2, done: false });
+        db.item.add({ listId: listId, itemName: 'Carrots', itemOrder: 3, done: false });
+        db.item.add({ listId: listId, itemName: 'Lamb chops', itemOrder: 4, done: false });
       });
-      db.list.add({ listName: 'Hardware store', inUse: false }).then(listId => {
+      db.list.add({ listName: 'Hardware store', inUse: false, listOrder: 2 }).then(listId => {
         // console.log(listId);
-        db.item.add({ listId: listId, itemName: 'Hammer', done: false });
-        db.item.add({ listId: listId, itemName: '5kWh Generator', done: false });
-        db.item.add({ listId: listId, itemName: 'Roof paint', done: false });
-        db.item.add({ listId: listId, itemName: 'Paint brush', done: false });
+        db.item.add({ listId: listId, itemName: 'Hammer', itemOrder: 1, done: false });
+        db.item.add({ listId: listId, itemName: '5kWh Generator', itemOrder: 2, done: false });
+        db.item.add({ listId: listId, itemName: 'Roof paint', itemOrder: 3, done: false });
+        db.item.add({ listId: listId, itemName: 'Paint brush', itemOrder: 4, done: false });
       });
     }
   }).catch(error => {

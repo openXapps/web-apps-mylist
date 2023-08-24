@@ -2,7 +2,7 @@ import { createContext, useReducer } from 'react';
 import Dexie from 'dexie';
 
 import AppContextReducer from './AppReducer';
-import { initLoad } from '../services/dbops';
+import { dbStores, initLoad } from '../services/dbops';
 
 // https://reactjs.org/docs/context.html
 
@@ -10,10 +10,7 @@ import { initLoad } from '../services/dbops';
 const db = new Dexie('SmartShopper');
 
 // Initialize database from IDB instance
-db.version(1).stores({
-  list: '++id, listName',
-  item: '++id, listId, itemName'
-});
+db.version(1).stores(dbStores);
 
 // Log some IDB info to console
 // validateDB(db);

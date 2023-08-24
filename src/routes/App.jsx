@@ -36,7 +36,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/edit/:listId" element={<EditList />} />
-          <Route path="/new" element={<EditList />} />
+          <Route path="/new" element={<NewList />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/download" element={<Download />} />
           <Route path="/upload" element={<Upload />} />
