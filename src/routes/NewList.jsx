@@ -33,7 +33,7 @@ export default function NewList() {
   const refItemNameInput = useRef(null);
   const [{ db }] = useContext(AppContext);
   const [listId, setListId] = useState(0);
-  const [isListSaved, setIsListSaved] = useState(false);
+  // const [isListSaved, setIsListSaved] = useState(false);
   // const [list, setList] = useState(emptyList);
   const [listName, setListName] = useState('');
   const [itemName, setItemName] = useState('');
@@ -53,7 +53,7 @@ export default function NewList() {
   const handleListSubmit = (e) => {
     e.preventDefault();
     if (listName.length > 0) {
-      if (isListSaved && listId) {
+      if (listId > 0) {
         db.list.update(listId, { listName: listName.trim() })
           .then(currentListId => { });
       } else {
@@ -62,7 +62,7 @@ export default function NewList() {
             setItemName(newListId);
             setListId(parseInt(newListId, 10));
             refItemNameInput.current.focus();
-            setIsListSaved(true);
+            // setIsListSaved(true);
           });
       }
     }
@@ -115,7 +115,7 @@ export default function NewList() {
         />
         <IconButton
           sx={{ ml: 1 }}
-          color={isListSaved ? 'default' : 'warning'}
+          color={listId > 0 ? 'default' : 'warning'}
           aria-label="save new list"
           onClick={e => handleListSubmit(e)}
         ><SaveIcon /></IconButton>
@@ -130,7 +130,7 @@ export default function NewList() {
         <TextField
           inputRef={refItemNameInput}
           fullWidth
-          disabled={!isListSaved}
+          disabled={listId === 0}
           label="Item Name"
           InputLabelProps={{ shrink: true }}
           value={itemName}
@@ -139,7 +139,7 @@ export default function NewList() {
         <IconButton
           sx={{ ml: 1 }}
           aria-label="save new item"
-          disabled={!isListSaved}
+          disabled={listId === 0}
           onClick={e => handleItemSubmit(e)}
         ><SaveIcon /></IconButton>
       </Box>
