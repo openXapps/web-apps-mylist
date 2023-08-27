@@ -17,7 +17,7 @@ import Button from '@mui/material/Button';
 
 // MUI Icons
 import SaveIcon from '@mui/icons-material/Save';
-import Delete from '@mui/icons-material/Delete';
+import DeleteIcon from '@mui/icons-material/Delete';
 import Edit from '@mui/icons-material/Edit';
 import Clear from '@mui/icons-material/Clear';
 
@@ -40,7 +40,7 @@ export default function EditList() {
   useEffect(() => {
     lists && setListName(lists[0].listName);
     return () => true;
-  }, [lists])
+  }, [])
 
   const handleListEditButton = (e) => {
     e.preventDefault();
@@ -49,6 +49,16 @@ export default function EditList() {
         .then(id => { });
     }
   }
+
+  const handleListDeleteButton = async () => {
+    if (items.length > 0) {
+      await db.item
+        .where('listId').equals(parseInt(listId, 10))
+        .delete();
+    }
+    await db.list.delete(parseInt(listId, 10));
+    rrNavigate(-1);
+  };
 
   const handleItemEditButtons = (e, action) => {
     e.preventDefault();
@@ -153,7 +163,7 @@ export default function EditList() {
                         <IconButton
                           aria-label="delete"
                           onClick={() => handleItemActionButtons('delete', parseInt(item.id))}
-                        ><Delete /></IconButton>
+                        ><DeleteIcon /></IconButton>
                       </>
                     }>
                     <ListItemText primary={item.itemName} />
@@ -164,8 +174,18 @@ export default function EditList() {
           )}
         </Paper>
         <Box sx={{ display: 'flex', flexDirection: 'row', mt: 1 }}>
-          <Button fullWidth variant="outlined" onClick={() => rrNavigate(-1)}>BACK TO HOME PAGE</Button>
-          {/* <Button fullWidth variant="outlined" sx={{ ml: 1 }} onClick={() => true}>Save</Button> */}
+          <Button
+            fullWidth
+            variant="outlined"
+            color="warning"
+            onClick={handleListDeleteButton}
+          >DELETE ENTIRE LIST</Button>
+          <Button
+            sx={{ ml: 1 }}
+            fullWidth
+            variant="outlined"
+            onClick={() => rrNavigate(-1)}
+          >BACK TO HOME PAGE</Button>
         </Box>
       </Box>
     </Container>

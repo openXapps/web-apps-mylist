@@ -59,7 +59,7 @@ function Header() {
             onClick={handleHomeButton}
           >{rrLocation.pathname === '/' ? <HomeIcon /> : <ArrowBackIcon />}</IconButton>
           <Typography variant="h6" sx={{ ml: 1, flexGrow: 1 }}
-          >SmartSHOPPER{smallScreen ? null : (
+          >MyLIST{smallScreen ? null : (
             <span style={{ fontSize: 12 }}> v{env.VERSION}</span>)}</Typography>
           {rrLocation.pathname === '/' ? (
             <Box display="flex" flexDirection="row">

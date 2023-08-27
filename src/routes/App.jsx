@@ -26,7 +26,7 @@ function App() {
   const [appState] = useContext(AppContext);
   const appTheme = createTheme(appState.themeIsDark ? dark : light);
   // const home = '/';
-  const home = '/apps/smartshopper';
+  const home = '/apps/mylist';
 
   return (
     <ThemeProvider theme={appTheme}>

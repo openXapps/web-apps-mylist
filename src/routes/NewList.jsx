@@ -1,6 +1,5 @@
 import { useState, useEffect, useContext, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-// import { useLiveQuery } from 'dexie-react-hooks';
 
 // MUI Components
 import Container from '@mui/material/Container';
@@ -16,16 +15,9 @@ import Button from '@mui/material/Button';
 
 // MUI Icons
 import SaveIcon from '@mui/icons-material/Save';
-import Delete from '@mui/icons-material/Delete';
-import Edit from '@mui/icons-material/Edit';
-import Clear from '@mui/icons-material/Clear';
 
 // App Specific
 import { AppContext } from '../context/AppStore';
-// import { emptyList } from '../services/dbops';
-// import { getItem } from '../services/utilities';
-
-// Init store
 
 export default function NewList() {
   const rrNavigate = useNavigate();
@@ -33,8 +25,7 @@ export default function NewList() {
   const refItemNameInput = useRef(null);
   const [{ db }] = useContext(AppContext);
   const [listId, setListId] = useState(0);
-  // const [isListSaved, setIsListSaved] = useState(false);
-  // const [list, setList] = useState(emptyList);
+  const [items, setItems] = useState([]);
   const [listName, setListName] = useState('');
   const [itemName, setItemName] = useState('');
 
@@ -43,12 +34,10 @@ export default function NewList() {
     return () => true;
   }, []);
 
-  // const handleListChange = (data, action) => {
-  // console.log(data, action);
-  //   if (action === 'LIST_NAME') setListName(prevState => {
-  //     return { ...prevState, listName: data };
-  //   });
-  // }
+  useEffect(() => {
+    refItemNameInput.current.focus();
+    return () => true;
+  }, [listId]);
 
   const handleListSubmit = (e) => {
     e.preventDefault();
@@ -59,10 +48,9 @@ export default function NewList() {
       } else {
         db.list.add({ listName: listName, inUse: true, listOrder: 1 })
           .then(newListId => {
-            setItemName(newListId);
             setListId(parseInt(newListId, 10));
+            console.log('set focus to item');
             refItemNameInput.current.focus();
-            // setIsListSaved(true);
           });
       }
     }
@@ -71,29 +59,17 @@ export default function NewList() {
   const handleItemSubmit = (e) => {
     e.preventDefault();
     if (refItemNameInput.current.value !== '') {
-      // Save action
-      // if (itemId > 0) {
-      //   db.item.update(itemId, { itemName: itemName.trim() })
-      //     .then(id => {
-      //       setItemName('');
-      //       setItemId(0);
-      //     });
-      // }
-      // New action
-      // if (itemId === 0 && action === 'submit') {
-      //   db.item.add({ listId: parseInt(listId, 10), itemName: itemName.trim(), done: false })
-      //     .then(id => {
-      //       setItemName('');
-      //       setItemId(0);
-      //       // refInputField.current.focus()
-      //     });
+      db.item.add({ listId: listId, itemName: itemName.trim(), done: false })
+        .then(newItemId => {
+          setItems(prevState => {
+            let a = prevState;
+            a.unshift({ itemName: itemName });
+            return a;
+          });
+          setItemName('');
+          refItemNameInput.current.focus();
+        });
     }
-  };
-
-  const handleItemDeleteButton = (id) => {
-    // setItemId(id);
-    // setItemName(getItem(items, id)[0].itemName);
-    // refInputField.current.focus();
   };
 
   return (
@@ -122,57 +98,50 @@ export default function NewList() {
       </Box>
       <Box
         sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', mt: 2 }}
+        area-aria-label="create new item form"
         component="form"
         noValidate
         autoComplete="off"
         onSubmit={e => handleItemSubmit(e)}
       >
         <TextField
+          aria-label="new item name input"
           inputRef={refItemNameInput}
           fullWidth
+          InputLabelProps={{ shrink: true }}
           disabled={listId === 0}
           label="Item Name"
-          InputLabelProps={{ shrink: true }}
           value={itemName}
           onChange={e => setItemName(e.currentTarget.value)}
         />
         <IconButton
           sx={{ ml: 1 }}
-          aria-label="save new item"
+          aria-label="new item save"
           disabled={listId === 0}
           onClick={e => handleItemSubmit(e)}
         ><SaveIcon /></IconButton>
       </Box>
 
       <Paper sx={{ mt: 1, padding: 1 }}>
-        {/* {items && (
-            <List>
-              {items.map((item) => {
-                return (
-                  <ListItem
-                    key={item.id}
-                    disableGutters
-                    secondaryAction={
-                      <>
-                        <IconButton
-                          aria-label="edit"
-                          onClick={() => handleItemActionButtons('edit', parseInt(item.id))}
-                        ><Edit /></IconButton>
-                        <IconButton
-                          aria-label="delete"
-                          onClick={() => handleItemActionButtons('delete', parseInt(item.id))}
-                        ><Delete /></IconButton>
-                      </>
-                    }>
-                    <ListItemText primary={item.itemName} />
-                  </ListItem>
-                );
-              })}
-            </List>
-          )} */}
+        {items.length > 0 && (
+          <List>
+            {items.map((item, index) => {
+              return (
+                <ListItem key={index} >
+                  <ListItemText primary={item.itemName} />
+                </ListItem>
+              );
+            })}
+          </List>
+        )}
       </Paper>
       <Box sx={{ display: 'flex', flexDirection: 'row', mt: 1 }}>
-        <Button fullWidth variant="outlined" onClick={() => rrNavigate(-1)}>BACK TO HOME PAGE</Button>
+        <Button
+          area-label="back button"
+          fullWidth
+          variant="outlined"
+          onClick={() => rrNavigate(-1)}
+        >BACK TO HOME PAGE</Button>
         {/* <Button fullWidth variant="outlined" sx={{ ml: 1 }} onClick={() => true}>Save</Button> */}
       </Box>
     </Container>
