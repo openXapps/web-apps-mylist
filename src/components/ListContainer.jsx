@@ -7,6 +7,7 @@ import Dexie from 'dexie';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -57,7 +58,7 @@ function ListContainer() {
           <Box key={list.id} sx={{ mt: 1 }}>
             <Stack direction="row" alignItems="center" justifyContent="space-between">
               <Typography>{`${list.listName} (${countDone}/${countOf})`}</Typography>
-              <Box>
+              <Box sx={{ display: 'flex', flexWrap: false }}>
                 <IconButton onClick={() => handleResetListClick(list.id)}><RestartAltIcon /></IconButton>
                 <IconButton
                   onClick={() => handleShowHideListClick(list.id, list.inUse)}
@@ -65,8 +66,8 @@ function ListContainer() {
                 <IconButton onClick={() => rrNavigate('/edit/' + list.id)}><EditIcon /></IconButton>
               </Box>
             </Stack>
-            {list.inUse && (
-              <List sx={{ mt: 1, bgcolor: 'background.paper' }}>
+            {list.inUse ? (
+              <List sx={{ mt: 1, bgcolor: 'background.paper' }} disablePadding>
                 {items.map((item) => {
                   return item.listId === list.id && (
                     <Stack key={item.id} direction="row" alignItems="center">
@@ -77,15 +78,15 @@ function ListContainer() {
                       ><PriceCheckIcon /></IconButton>
                       <ListItem disableGutters disablePadding>
                         <ListItemButton onClick={() => handleItemClick(item.id, item.done)}>
-                          <ListItemText primary={item.itemName} />
-                          {item.done && <CheckIcon />}
+                          <ListItemText primary={item.itemName} primaryTypographyProps={{ variant: 'h6' }} />
+                          <Box ml={1}><CheckIcon color={item.done ? 'warning' : 'disabled'} /></Box>
                         </ListItemButton>
                       </ListItem>
                     </Stack>
                   );
                 })}
               </List>
-            )}
+            ) : (<Divider />)}
           </Box>
         );
       })}

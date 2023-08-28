@@ -7,7 +7,7 @@ import { dbStores, initLoad } from '../services/dbops';
 // https://reactjs.org/docs/context.html
 
 // Load IndexedDB instance
-const db = new Dexie('SmartShopper');
+const db = new Dexie('MyList');
 
 // Initialize database from IDB instance
 db.version(1).stores(dbStores);

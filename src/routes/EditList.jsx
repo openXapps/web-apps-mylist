@@ -18,8 +18,8 @@ import Button from '@mui/material/Button';
 // MUI Icons
 import SaveIcon from '@mui/icons-material/Save';
 import DeleteIcon from '@mui/icons-material/Delete';
-import Edit from '@mui/icons-material/Edit';
-import Clear from '@mui/icons-material/Clear';
+import EditIcon from '@mui/icons-material/Edit';
+import ClearIcon from '@mui/icons-material/Clear';
 
 // App Specific
 import { AppContext } from '../context/AppStore';
@@ -28,7 +28,8 @@ import { getItem } from '../services/utilities';
 export default function EditList() {
   // const smallScreen = useMediaQuery(theme => theme.breakpoints.down('sm'));
   const rrNavigate = useNavigate();
-  const refInputField = useRef(null);
+  // const refListNameInput = useRef(null);
+  const refItemNameInput = useRef(null);
   const { listId } = useParams();
   const [{ db }] = useContext(AppContext);
   const lists = useLiveQuery(() => db.list.where('id').equals(listId ? parseInt(listId, 10) : 0).toArray(), [listId]);
@@ -38,9 +39,13 @@ export default function EditList() {
   const [itemId, setItemId] = useState(0);
 
   useEffect(() => {
-    lists && setListName(lists[0].listName);
+    console.log(lists);
+    if (Array.isArray(lists)) {
+      lists.length > 0 && setListName(lists[0].listName);
+      // refListNameInput.current.focus();
+    }
     return () => true;
-  }, [])
+  }, [lists]);
 
   const handleListEditButton = (e) => {
     e.preventDefault();
@@ -48,7 +53,7 @@ export default function EditList() {
       db.list.update(parseInt(listId, 10), { listName: listName.trim() })
         .then(id => { });
     }
-  }
+  };
 
   const handleListDeleteButton = async () => {
     if (items.length > 0) {
@@ -62,7 +67,7 @@ export default function EditList() {
 
   const handleItemEditButtons = (e, action) => {
     e.preventDefault();
-    if (refInputField.current.value !== '') {
+    if (refItemNameInput.current.value !== '') {
       // Save action
       if (itemId > 0) {
         db.item.update(itemId, { itemName: itemName.trim() })
@@ -77,14 +82,14 @@ export default function EditList() {
           .then(id => {
             setItemName('');
             setItemId(0);
-            refInputField.current.focus()
+            refItemNameInput.current.focus()
           });
       }
       // Clear action
       if (action === 'clear') {
         setItemName('');
         setItemId(0);
-        refInputField.current.focus()
+        refItemNameInput.current.focus()
       }
     }
   };
@@ -95,7 +100,7 @@ export default function EditList() {
     if (action === 'edit') {
       setItemId(id);
       setItemName(getItem(items, id)[0].itemName);
-      refInputField.current.focus();
+      refItemNameInput.current.focus();
     }
     // Delete action
     if (action === 'delete') {
@@ -128,7 +133,7 @@ export default function EditList() {
           onSubmit={(e) => handleItemEditButtons(e, 'submit')}
         >
           <TextField
-            inputRef={refInputField}
+            inputRef={refItemNameInput}
             fullWidth
             label="Item Name"
             InputLabelProps={{ shrink: true }}
@@ -143,30 +148,31 @@ export default function EditList() {
           <IconButton
             aria-label="clear item name"
             onClick={(e) => handleItemEditButtons(e, 'clear')}
-          ><Clear /></IconButton>
+          ><ClearIcon /></IconButton>
         </Box>
 
-        <Paper sx={{ mt: 1, padding: 1 }}>
+        <Paper sx={{ mt: 1, px: 1 }}>
           {items && (
-            <List>
+            <List disablePadding>
               {items.map((item) => {
                 return (
                   <ListItem
                     key={item.id}
+                    disablePadding
                     disableGutters
                     secondaryAction={
                       <>
                         <IconButton
                           aria-label="edit"
                           onClick={() => handleItemActionButtons('edit', parseInt(item.id))}
-                        ><Edit /></IconButton>
+                        ><EditIcon /></IconButton>
                         <IconButton
                           aria-label="delete"
                           onClick={() => handleItemActionButtons('delete', parseInt(item.id))}
                         ><DeleteIcon /></IconButton>
                       </>
                     }>
-                    <ListItemText primary={item.itemName} />
+                    <ListItemText primary={item.itemName} primaryTypographyProps={{ variant: 'h6' }} />
                   </ListItem>
                 );
               })}

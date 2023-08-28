@@ -8,6 +8,7 @@ function Home() {
     <Container maxWidth="sm">
       <Toolbar />
       <List />
+      <Toolbar />
     </Container>
   );
 }

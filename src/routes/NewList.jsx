@@ -122,13 +122,13 @@ export default function NewList() {
         ><SaveIcon /></IconButton>
       </Box>
 
-      <Paper sx={{ mt: 1, padding: 1 }}>
+      <Paper sx={{ mt: 1, px: 1 }}>
         {items.length > 0 && (
-          <List>
+          <List disablePadding>
             {items.map((item, index) => {
               return (
-                <ListItem key={index} >
-                  <ListItemText primary={item.itemName} />
+                <ListItem key={index} disablePadding>
+                  <ListItemText primary={item.itemName} primaryTypographyProps={{ variant: 'h6' }} />
                 </ListItem>
               );
             })}
