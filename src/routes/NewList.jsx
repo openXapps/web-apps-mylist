@@ -46,7 +46,7 @@ export default function NewList() {
         db.list.update(listId, { listName: listName.trim() })
           .then(currentListId => { });
       } else {
-        db.list.add({ listName: listName, inUse: true, listOrder: 1 })
+        db.list.add({ listName: listName, inUse: true, listOrder: 1, listType: 0 })
           .then(newListId => {
             setListId(parseInt(newListId, 10));
             console.log('set focus to item');

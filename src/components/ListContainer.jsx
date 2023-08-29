@@ -20,10 +20,12 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import CheckIcon from '@mui/icons-material/Check';
-import PriceCheckIcon from '@mui/icons-material/PriceCheck';
+import GoogleIcon from '@mui/icons-material/Google';
+// import PriceCheckIcon from '@mui/icons-material/PriceCheck';
 
 // App Specific
 import { AppContext } from '../context/AppStore';
+import { listTypes } from '../services/dbops';
 
 function ListContainer() {
   const [{ db }] = useContext(AppContext); // destructure db out of state
@@ -57,7 +59,7 @@ function ListContainer() {
         return (
           <Box key={list.id} sx={{ mt: 1 }}>
             <Stack direction="row" alignItems="center" justifyContent="space-between">
-              <Typography>{`${list.listName} (${countDone}/${countOf})`}</Typography>
+              <Typography>{`${listTypes[list.listType]}: ${list.listName} (${countDone}/${countOf})`}</Typography>
               <Box sx={{ display: 'flex', flexWrap: false }}>
                 <IconButton onClick={() => handleResetListClick(list.id)}><RestartAltIcon /></IconButton>
                 <IconButton
@@ -69,13 +71,16 @@ function ListContainer() {
             {list.inUse ? (
               <List sx={{ mt: 1, bgcolor: 'background.paper' }} disablePadding>
                 {items.map((item) => {
+                  const url = list.listType === 0
+                    ? ('https://www.google.com/search?q=' + item.itemName + '+price&safe=active&source=lnms&tbm=shop')
+                    : ('https://www.google.com/search?q=how to "' + item.itemName + '"&safe=active');
                   return item.listId === list.id && (
                     <Stack key={item.id} direction="row" alignItems="center">
                       <IconButton
-                        href={"https://www.google.com/search?q=" + item.itemName + "+price&safe=active&source=lnms&tbm=shop"}
+                        href={url}
                         target="_blank"
                         rel="noopener"
-                      ><PriceCheckIcon /></IconButton>
+                      ><GoogleIcon /></IconButton>
                       <ListItem disableGutters disablePadding>
                         <ListItemButton onClick={() => handleItemClick(item.id, item.done)}>
                           <ListItemText primary={item.itemName} primaryTypographyProps={{ variant: 'h6' }} />

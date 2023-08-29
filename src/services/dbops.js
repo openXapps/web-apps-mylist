@@ -16,10 +16,19 @@ export const emptyList = [
     listName: '',
     inUse: false,
     listOrder: 1,
+    listType: '',
     items: [
       { listId: 0, itemName: '', itemOrder: 1, done: false },
     ]
   },
+];
+
+/**
+ * Type of lists
+ */
+export const listTypes = [
+  'Shopping',
+  'ToDo',
 ];
 
 /**
@@ -33,19 +42,20 @@ export function initLoad(db) {
   db.list.count().then(docCount => {
     // console.log(docCount)
     if (docCount === 0) {
-      db.list.add({ listName: 'Weekly food shopping', inUse: true, listOrder: 1 }).then(listId => {
+      db.list.add({ listName: 'Weekly food shopping', inUse: true, listOrder: 1, listType: 0 }).then(listId => {
         // console.log(listId);
         db.item.add({ listId: listId, itemName: 'Brown bread', itemOrder: 1, done: false });
         db.item.add({ listId: listId, itemName: 'Fresh milk', itemOrder: 2, done: false });
         db.item.add({ listId: listId, itemName: 'Carrots', itemOrder: 3, done: false });
         db.item.add({ listId: listId, itemName: 'Lamb chops', itemOrder: 4, done: false });
       });
-      db.list.add({ listName: 'Hardware store', inUse: false, listOrder: 2 }).then(listId => {
+      db.list.add({ listName: 'Saturday gardening', inUse: false, listOrder: 2, listType: 1 }).then(listId => {
         // console.log(listId);
-        db.item.add({ listId: listId, itemName: 'Hammer', itemOrder: 1, done: false });
-        db.item.add({ listId: listId, itemName: '5kWh Generator', itemOrder: 2, done: false });
-        db.item.add({ listId: listId, itemName: 'Roof paint', itemOrder: 3, done: false });
-        db.item.add({ listId: listId, itemName: 'Paint brush', itemOrder: 4, done: false });
+        db.item.add({ listId: listId, itemName: 'Mow the lawn', itemOrder: 1, done: false });
+        db.item.add({ listId: listId, itemName: 'Rake leaves', itemOrder: 2, done: false });
+        db.item.add({ listId: listId, itemName: 'Wash windows', itemOrder: 3, done: false });
+        db.item.add({ listId: listId, itemName: 'Clean gutters', itemOrder: 4, done: false });
+        db.item.add({ listId: listId, itemName: 'Trim hedge', itemOrder: 4, done: false });
       });
     }
   }).catch(error => {
