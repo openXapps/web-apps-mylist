@@ -21,7 +21,6 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import CheckIcon from '@mui/icons-material/Check';
 import GoogleIcon from '@mui/icons-material/Google';
-// import PriceCheckIcon from '@mui/icons-material/PriceCheck';
 
 // App Specific
 import { AppContext } from '../context/AppStore';
@@ -59,7 +58,7 @@ function ListContainer() {
         return (
           <Box key={list.id} sx={{ mt: 1 }}>
             <Stack direction="row" alignItems="center" justifyContent="space-between">
-              <Typography>{`${listTypes[list.listType]}: ${list.listName} (${countDone}/${countOf})`}</Typography>
+              <Typography>{`${listTypes[list.listType].label}: ${list.listName} (${countDone}/${countOf})`}</Typography>
               <Box sx={{ display: 'flex', flexWrap: false }}>
                 <IconButton onClick={() => handleResetListClick(list.id)}><RestartAltIcon /></IconButton>
                 <IconButton

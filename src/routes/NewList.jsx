@@ -7,6 +7,8 @@ import Toolbar from '@mui/material/Toolbar';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
@@ -18,6 +20,7 @@ import SaveIcon from '@mui/icons-material/Save';
 
 // App Specific
 import { AppContext } from '../context/AppStore';
+import { listTypes } from '../services/dbops';
 
 export default function NewList() {
   const rrNavigate = useNavigate();
@@ -27,6 +30,7 @@ export default function NewList() {
   const [listId, setListId] = useState(0);
   const [items, setItems] = useState([]);
   const [listName, setListName] = useState('');
+  const [listType, setListType] = useState(0);
   const [itemName, setItemName] = useState('');
 
   useEffect(() => {
@@ -43,15 +47,21 @@ export default function NewList() {
     e.preventDefault();
     if (listName.length > 0) {
       if (listId > 0) {
-        db.list.update(listId, { listName: listName.trim() })
-          .then(currentListId => { });
+        db.list.update(listId, {
+          listName: listName.trim(),
+          listType: parseInt(listType, 10)
+        }).then(currentListId => { });
       } else {
-        db.list.add({ listName: listName, inUse: true, listOrder: 1, listType: 0 })
-          .then(newListId => {
-            setListId(parseInt(newListId, 10));
-            console.log('set focus to item');
-            refItemNameInput.current.focus();
-          });
+        db.list.add({
+          listName: listName,
+          inUse: true,
+          listOrder: 1,
+          listType: parseInt(listType, 10)
+        }).then(newListId => {
+          setListId(parseInt(newListId, 10));
+          // console.log('set focus to item');
+          refItemNameInput.current.focus();
+        });
       }
     }
   };
@@ -86,9 +96,19 @@ export default function NewList() {
           inputRef={refListNameInput}
           fullWidth
           label="List Name"
+          size="small"
           value={listName}
           onChange={e => setListName(e.currentTarget.value)}
         />
+        <Select
+          sx={{ ml: 0.5 }}
+          size="small"
+          value={listType}
+          onChange={e => setListType(parseInt(e.target.value, 10))}
+        >{listTypes.map(v => (
+          <MenuItem key={v.value} value={v.value}>{v.label}</MenuItem>
+        ))}
+        </Select>
         <IconButton
           sx={{ ml: 1 }}
           color={listId > 0 ? 'default' : 'warning'}
@@ -111,6 +131,7 @@ export default function NewList() {
           InputLabelProps={{ shrink: true }}
           disabled={listId === 0}
           label="Item Name"
+          size="small"
           value={itemName}
           onChange={e => setItemName(e.currentTarget.value)}
         />

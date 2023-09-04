@@ -27,8 +27,8 @@ export const emptyList = [
  * Type of lists
  */
 export const listTypes = [
-  'Shopping',
-  'ToDo',
+  { value: 0, label: 'Shopping' },
+  { value: 1, label: 'ToDo' }
 ];
 
 /**

@@ -9,8 +9,13 @@ import { dbStores, initLoad } from '../services/dbops';
 // Load IndexedDB instance
 const db = new Dexie('MyList');
 
-// Initialize database from IDB instance
-db.version(1).stores(dbStores);
+
+/**
+ * Initialize database from IDB instance
+ * Ver 01: Renamed IDB from SmartShooper to MyList
+ * Ver 02: Add new field listType
+ */
+db.version(2).stores(dbStores);
 
 // Log some IDB info to console
 // validateDB(db);

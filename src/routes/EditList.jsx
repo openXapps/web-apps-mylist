@@ -7,8 +7,9 @@ import Container from '@mui/material/Container';
 import Toolbar from '@mui/material/Toolbar';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
-// import Stack from '@mui/material/Stack';
+import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
+import Select from '@mui/material/Select';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
@@ -24,6 +25,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 // App Specific
 import { AppContext } from '../context/AppStore';
 import { getItem } from '../services/utilities';
+import { listTypes } from '../services/dbops';
 
 export default function EditList() {
   // const smallScreen = useMediaQuery(theme => theme.breakpoints.down('sm'));
@@ -35,23 +37,28 @@ export default function EditList() {
   const lists = useLiveQuery(() => db.list.where('id').equals(listId ? parseInt(listId, 10) : 0).toArray(), [listId]);
   const items = useLiveQuery(() => db.item.where('listId').equals(listId ? parseInt(listId, 10) : 0).reverse().toArray(), [listId]);
   const [listName, setListName] = useState('');
+  const [listType, setListType] = useState(0);
   const [itemName, setItemName] = useState('');
   const [itemId, setItemId] = useState(0);
 
   useEffect(() => {
-    console.log(lists);
     if (Array.isArray(lists)) {
-      lists.length > 0 && setListName(lists[0].listName);
-      // refListNameInput.current.focus();
+      if (lists.length > 0) {
+        setListName(lists[0].listName);
+        setListType(lists[0].listType);
+      }
     }
     return () => true;
   }, [lists]);
 
-  const handleListEditButton = (e) => {
+  const handleListSaveButton = (e) => {
     e.preventDefault();
     if (listName !== '') {
-      db.list.update(parseInt(listId, 10), { listName: listName.trim() })
-        .then(id => { });
+      db.list.update(parseInt(listId, 10), {
+        listName: listName.trim(),
+        listType: parseInt(listType, 10)
+      }
+      ).then(id => { });
     }
   };
 
@@ -111,90 +118,102 @@ export default function EditList() {
   return (
     <Container maxWidth="sm">
       <Toolbar />
-      <Box sx={{ mt: 2 }}>
-        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', mt: 2 }}>
-          <TextField
-            fullWidth
-            label="List Name"
-            value={listName}
-            onChange={(e) => setListName(e.currentTarget.value)}
-          />
-          <IconButton
-            sx={{ ml: 1 }}
-            aria-label="save list name"
-            onClick={(e) => handleListEditButton(e)}
-          ><SaveIcon /></IconButton>
-        </Box>
-        <Box
-          sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', mt: 2 }}
-          component="form"
-          noValidate
-          autoComplete="off"
-          onSubmit={(e) => handleItemEditButtons(e, 'submit')}
-        >
-          <TextField
-            inputRef={refItemNameInput}
-            fullWidth
-            label="Item Name"
-            InputLabelProps={{ shrink: true }}
-            value={itemName}
-            onChange={(e) => setItemName(e.currentTarget.value)}
-          />
-          <IconButton
-            sx={{ ml: 1 }}
-            aria-label="update item name"
-            onClick={(e) => handleItemEditButtons(e, 'submit')}
-          ><SaveIcon /></IconButton>
-          <IconButton
-            aria-label="clear item name"
-            onClick={(e) => handleItemEditButtons(e, 'clear')}
-          ><ClearIcon /></IconButton>
-        </Box>
-
-        <Paper sx={{ mt: 1, px: 1 }}>
-          {items && (
-            <List disablePadding>
-              {items.map((item) => {
-                return (
-                  <ListItem
-                    key={item.id}
-                    disablePadding
-                    disableGutters
-                    secondaryAction={
-                      <>
-                        <IconButton
-                          aria-label="edit"
-                          onClick={() => handleItemActionButtons('edit', parseInt(item.id))}
-                        ><EditIcon /></IconButton>
-                        <IconButton
-                          aria-label="delete"
-                          onClick={() => handleItemActionButtons('delete', parseInt(item.id))}
-                        ><DeleteIcon /></IconButton>
-                      </>
-                    }>
-                    <ListItemText primary={item.itemName} primaryTypographyProps={{ variant: 'h6' }} />
-                  </ListItem>
-                );
-              })}
-            </List>
-          )}
-        </Paper>
-        <Box sx={{ display: 'flex', flexDirection: 'row', mt: 1 }}>
-          <Button
-            fullWidth
-            variant="outlined"
-            color="warning"
-            onClick={handleListDeleteButton}
-          >DELETE ENTIRE LIST</Button>
-          <Button
-            sx={{ ml: 1 }}
-            fullWidth
-            variant="outlined"
-            onClick={() => rrNavigate(-1)}
-          >BACK TO HOME PAGE</Button>
-        </Box>
+      {/* <Box sx={{ mt: 2 }}> */}
+      <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', mt: 2 }}>
+        <TextField
+          fullWidth
+          label="List Name"
+          size="small"
+          InputLabelProps={{ shrink: true }}
+          value={listName}
+          onChange={(e) => setListName(e.currentTarget.value)}
+        />
+        <Select
+          sx={{ ml: 0.5 }}
+          size="small"
+          value={listType}
+          onChange={e => setListType(parseInt(e.target.value, 10))}
+        >{listTypes.map(v => (
+          <MenuItem key={v.value} value={v.value}>{v.label}</MenuItem>
+        ))}
+        </Select>
+        <IconButton
+          sx={{ ml: 1 }}
+          aria-label="save list name"
+          onClick={(e) => handleListSaveButton(e)}
+        ><SaveIcon /></IconButton>
       </Box>
-    </Container>
+      <Box
+        sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', mt: 2 }}
+        component="form"
+        noValidate
+        autoComplete="off"
+        onSubmit={(e) => handleItemEditButtons(e, 'submit')}
+      >
+        <TextField
+          inputRef={refItemNameInput}
+          fullWidth
+          label="Item Name"
+          size="small"
+          InputLabelProps={{ shrink: true }}
+          value={itemName}
+          onChange={(e) => setItemName(e.currentTarget.value)}
+        />
+        <IconButton
+          sx={{ ml: 1 }}
+          aria-label="update item name"
+          onClick={(e) => handleItemEditButtons(e, 'submit')}
+        ><SaveIcon /></IconButton>
+        <IconButton
+          aria-label="clear item name"
+          onClick={(e) => handleItemEditButtons(e, 'clear')}
+        ><ClearIcon /></IconButton>
+      </Box>
+
+      <Paper sx={{ mt: 1, px: 1 }}>
+        {items && (
+          <List disablePadding>
+            {items.map((item) => {
+              return (
+                <ListItem
+                  key={item.id}
+                  disablePadding
+                  disableGutters
+                  secondaryAction={
+                    <>
+                      <IconButton
+                        aria-label="edit"
+                        onClick={() => handleItemActionButtons('edit', parseInt(item.id))}
+                      ><EditIcon /></IconButton>
+                      <IconButton
+                        aria-label="delete"
+                        onClick={() => handleItemActionButtons('delete', parseInt(item.id))}
+                      ><DeleteIcon /></IconButton>
+                    </>
+                  }>
+                  <ListItemText primary={item.itemName} primaryTypographyProps={{ variant: 'h6' }} />
+                </ListItem>
+              );
+            })}
+          </List>
+        )}
+      </Paper>
+      <Box sx={{ display: 'flex', flexDirection: 'row', mt: 1 }}>
+        <Button
+          fullWidth
+          variant="outlined"
+          color="warning"
+          onClick={handleListDeleteButton}
+        >DELETE ENTIRE LIST</Button>
+        <Button
+          sx={{ ml: 1 }}
+          fullWidth
+          variant="outlined"
+          onClick={() => rrNavigate(-1)}
+        >BACK TO HOME PAGE</Button>
+      </Box>
+      {/* </Box> */}
+    </Container >
   );
 }
 
