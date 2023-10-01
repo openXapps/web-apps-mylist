@@ -192,6 +192,10 @@ export default function EditList() {
                     </>
                   }>
                   <ListItemText primary={item.itemName} primaryTypographyProps={{ variant: 'h6' }} />
+                  {/* <ListItemButton onClick={() => handleItemClick(item.id, item.done)}>
+                          <ListItemText primary={item.itemName} primaryTypographyProps={{ variant: 'h6' }} />
+                          <Box ml={1}><CheckIcon color={item.done ? 'warning' : 'disabled'} /></Box>
+                        </ListItemButton> */}
                 </ListItem>
               );
             })}

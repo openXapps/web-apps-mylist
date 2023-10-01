@@ -14,6 +14,7 @@ import dark from '../themes/dark';
 
 // App routes
 import Header from '../components/Header';
+import Footer from '../components/Footer';
 import Home from './Home';
 import EditList from './EditList';
 import NewList from './NewList';
@@ -42,6 +43,7 @@ function App() {
           <Route path="/upload" element={<Upload />} />
           <Route path="*" element={<NoPage />} />
         </Routes>
+        <Footer />
       </BrowserRouter>
     </ThemeProvider>
   );

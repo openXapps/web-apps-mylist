@@ -52,7 +52,7 @@ function Header() {
   return (
     <AppBar color="inherit">
       <Container maxWidth="sm" disableGutters={smallScreen}>
-        <Toolbar disableGutters>
+        <Toolbar disableGutters variant={smallScreen ? 'dense' : 'regular'}>
           <IconButton
             color="inherit"
             aria-label="home button"
