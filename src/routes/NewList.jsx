@@ -171,6 +171,7 @@ export default function NewList() {
         >BACK TO HOME PAGE</Button>
         {/* <Button fullWidth variant="outlined" sx={{ ml: 1 }} onClick={() => true}>Save</Button> */}
       </Box>
+      <Toolbar sx={{ mb: 2 }} />
     </Container>
   );
 }

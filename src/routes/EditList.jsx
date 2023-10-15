@@ -225,6 +225,7 @@ export default function EditList() {
           onClick={() => rrNavigate(-1)}
         >BACK TO HOME PAGE</Button>
       </Box>
+      <Toolbar sx={{mb:2}}/>
     </Container >
   );
 }

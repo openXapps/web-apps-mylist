@@ -8,7 +8,7 @@ function Home() {
     <Container maxWidth="sm">
       <Toolbar />
       <List />
-      <Toolbar />
+      <Toolbar sx={{mb: 2}}/>
     </Container>
   );
 }
