@@ -20,7 +20,7 @@ import SaveIcon from '@mui/icons-material/Save';
 
 // App Specific
 import { AppContext } from '../context/AppStore';
-import { listTypes } from '../services/dbops';
+import { listTypes, inputFieldProps } from '../services/dbops';
 
 export default function NewList() {
   const rrNavigate = useNavigate();
@@ -98,7 +98,10 @@ export default function NewList() {
           label="List Name"
           size="small"
           value={listName}
-          onChange={e => setListName(e.currentTarget.value)}
+          onChange={e => {
+            e.currentTarget.value.length <= inputFieldProps.listName.maxLength &&
+              setListName(e.currentTarget.value)
+          }}
         />
         <Select
           sx={{ ml: 0.5 }}
@@ -133,7 +136,10 @@ export default function NewList() {
           label="Item Name"
           size="small"
           value={itemName}
-          onChange={e => setItemName(e.currentTarget.value)}
+          onChange={e => {
+            e.currentTarget.value.length < inputFieldProps.itemName.maxLength &&
+              setItemName(e.currentTarget.value)
+          }}
         />
         <IconButton
           sx={{ ml: 1 }}

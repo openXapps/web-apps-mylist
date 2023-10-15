@@ -24,6 +24,14 @@ export const emptyList = [
 ];
 
 /**
+ * Input field properties
+ */
+export const inputFieldProps = {
+  listName: { maxLength: 30 },
+  itemName: { maxLength: 40 },
+}
+
+/**
  * Type of lists
  */
 export const listTypes = [

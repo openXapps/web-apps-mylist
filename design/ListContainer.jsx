@@ -8,10 +8,10 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
-// import List from '@mui/material/List';
-// import ListItem from '@mui/material/ListItem';
-// import ListItemButton from '@mui/material/ListItemButton';
-// import ListItemText from '@mui/material/ListItemText';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
 import IconButton from '@mui/material/IconButton';
 
 // MUI Icons
@@ -19,11 +19,11 @@ import EditIcon from '@mui/icons-material/Edit';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
-// import CheckIcon from '@mui/icons-material/Check';
-// import GoogleIcon from '@mui/icons-material/Google';
+import CheckIcon from '@mui/icons-material/Check';
+import GoogleIcon from '@mui/icons-material/Google';
 
 // App Specific
-import ListItemComponent from '../components/ListItemComponent';
+import ItemHome from '../components/ItemHome';
 import { AppContext } from '../context/AppStore';
 import { listTypes } from '../services/dbops';
 
@@ -68,35 +68,29 @@ function ListContainer() {
                 <IconButton onClick={() => rrNavigate('/edit/' + list.id)}><EditIcon /></IconButton>
               </Box>
             </Stack>
-            {list.inUse ? (items.map((item) => {
-              const url = list.listType === 0
-                ? ('https://www.google.com/search?q=' + item.itemName + '+price&safe=active&source=lnms&tbm=shop')
-                : ('https://www.google.com/search?q=how to "' + item.itemName + '"&safe=active');
-              return item.listId === list.id && (
-                <ListItemComponent
-                  key={item.id}
-                  mode='HOME'
-                  url={url}
-                  itemId={item.id}
-                  itemName={item.itemName}
-                  itemDone={item.done}
-                  handleItemClick={handleItemClick}
-                />
-                //   <Stack key={item.id} direction="row" alignItems="center">
-                //     <IconButton
-                //       href={url}
-                //       target="_blank"
-                //       rel="noopener"
-                //     ><GoogleIcon color="disabled" /></IconButton>
-                //     <ListItem disableGutters disablePadding>
-                //       <ListItemButton onClick={() => handleItemClick(item.id, item.done)}>
-                //         <ListItemText primary={item.itemName} primaryTypographyProps={{ variant: 'h6' }} />
-                //         <Box ml={1}><CheckIcon color={item.done ? 'warning' : 'disabled'} /></Box>
-                //       </ListItemButton>
-                //     </ListItem>
-                //   </Stack>
-              );
-            })
+            {list.inUse ? (
+              // <List sx={{ mt: 1, bgcolor: 'background.paper' }} disablePadding>
+                {items.map((item) => {
+                  const url = list.listType === 0
+                    ? ('https://www.google.com/search?q=' + item.itemName + '+price&safe=active&source=lnms&tbm=shop')
+                    : ('https://www.google.com/search?q=how to "' + item.itemName + '"&safe=active');
+                  return item.listId === list.id && (
+                    <ItemHome key={item.id}  url={url} itemName={item.itemName} />
+                    //   <Stack key={item.id} direction="row" alignItems="center">
+                    //     <IconButton
+                    //       href={url}
+                    //       target="_blank"
+                    //       rel="noopener"
+                    //     ><GoogleIcon color="disabled" /></IconButton>
+                    //     <ListItem disableGutters disablePadding>
+                    //       <ListItemButton onClick={() => handleItemClick(item.id, item.done)}>
+                    //         <ListItemText primary={item.itemName} primaryTypographyProps={{ variant: 'h6' }} />
+                    //         <Box ml={1}><CheckIcon color={item.done ? 'warning' : 'disabled'} /></Box>
+                    //       </ListItemButton>
+                    //     </ListItem>
+                    //   </Stack>
+                  );
+                })}
               // </List>
             ) : (<Divider />)}
           </Box>
