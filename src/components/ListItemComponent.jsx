@@ -15,16 +15,17 @@ import EditIcon from '@mui/icons-material/Edit';
  * @returns React component
  */
 export default function ListItemComponent(props) {
-  const { 
-    mode, 
-    url, 
-    itemId, 
-    itemName, 
-    itemDone, 
+  const {
+    mode,
+    url,
+    itemId,
+    itemName,
+    itemDone,
     handleItemClick,
     handleItemActionButtons,
   } = props;
 
+  // TEST
   return (
     <Box sx={{
       width: '100%',
@@ -35,11 +36,13 @@ export default function ListItemComponent(props) {
       bgcolor: (theme) => (theme.palette.mode === 'dark' ? '#101010' : 'grey.100'),
       borderRadius: 2,
     }}>
-      {mode === 'HOME' && <IconButton
-        href={url}
-        target="_blank"
-        rel="noopener"
-      ><GoogleIcon color="disabled" /></IconButton>}
+      {mode === 'HOME' &&
+        <IconButton
+          href={url}
+          target="_blank"
+          rel="noopener"
+        ><GoogleIcon color="disabled" /></IconButton>
+      }
       <Typography
         sx={{
           flexGrow: 1,
@@ -48,18 +51,21 @@ export default function ListItemComponent(props) {
         }}
         variant="h6"
       >{itemName}</Typography>
-      {mode === 'HOME' && <IconButton onClick={() => handleItemClick(itemId, itemDone)}><CheckIcon /></IconButton>}
-      {mode === 'EDIT' && <Box sx={{display: 'flex', flexWrap: 'nowrap'}}>
-        <IconButton
-          aria-label="delete"
-          color="warning"
-          onClick={() => handleItemActionButtons('delete', parseInt(itemId))}
-        ><DeleteIcon /></IconButton>
-        <IconButton
-          aria-label="edit"
-          onClick={() => handleItemActionButtons('edit', parseInt(itemId))}
-        ><EditIcon /></IconButton>
-      </Box>
+      {mode === 'HOME' &&
+        <IconButton onClick={() => handleItemClick(itemId, itemDone)}><CheckIcon /></IconButton>
+      }
+      {mode === 'EDIT' &&
+        <Box sx={{ display: 'flex', flexWrap: 'nowrap' }}>
+          <IconButton
+            aria-label="delete"
+            color="warning"
+            onClick={() => handleItemActionButtons('delete', parseInt(itemId))}
+          ><DeleteIcon /></IconButton>
+          <IconButton
+            aria-label="edit"
+            onClick={() => handleItemActionButtons('edit', parseInt(itemId))}
+          ><EditIcon /></IconButton>
+        </Box>
       }
     </Box>
   );
