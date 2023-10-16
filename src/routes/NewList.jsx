@@ -4,14 +4,10 @@ import { useNavigate } from 'react-router-dom';
 // MUI Components
 import Container from '@mui/material/Container';
 import Toolbar from '@mui/material/Toolbar';
-import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
 import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
 
@@ -21,6 +17,7 @@ import SaveIcon from '@mui/icons-material/Save';
 // App Specific
 import { AppContext } from '../context/AppStore';
 import { listTypes, inputFieldProps } from '../services/dbops';
+import ListItemComponent from '../components/ListItemComponent';
 
 export default function NewList() {
   const rrNavigate = useNavigate();
@@ -73,7 +70,7 @@ export default function NewList() {
         .then(newItemId => {
           setItems(prevState => {
             let a = prevState;
-            a.unshift({ itemName: itemName });
+            a.unshift({ id: newItemId, itemName: itemName });
             return a;
           });
           setItemName('');
@@ -148,20 +145,22 @@ export default function NewList() {
           onClick={e => handleItemSubmit(e)}
         ><SaveIcon /></IconButton>
       </Box>
-
-      <Paper sx={{ mt: 1, px: 1 }}>
-        {items.length > 0 && (
-          <List disablePadding>
-            {items.map((item, index) => {
-              return (
-                <ListItem key={index} disablePadding>
-                  <ListItemText primary={item.itemName} primaryTypographyProps={{ variant: 'h6' }} />
-                </ListItem>
-              );
-            })}
-          </List>
-        )}
-      </Paper>
+      <Box sx={{ mt: 1 }}>
+        {items && items.map(item => {
+          return (
+            <ListItemComponent
+              key={item.id}
+              mode='NEW'
+              url=''
+              itemId={item.id}
+              itemName={item.itemName}
+              itemDone={item.done}
+              handleItemClick={() => { }}
+              handleItemActionButtons={() => { }}
+            />
+          );
+        })}
+      </Box>
       <Box sx={{ display: 'flex', flexDirection: 'row', mt: 1 }}>
         <Button
           area-label="back button"
@@ -169,9 +168,8 @@ export default function NewList() {
           variant="outlined"
           onClick={() => rrNavigate(-1)}
         >BACK TO HOME PAGE</Button>
-        {/* <Button fullWidth variant="outlined" sx={{ ml: 1 }} onClick={() => true}>Save</Button> */}
       </Box>
-      <Toolbar sx={{ mb: 2 }} />
+      <Toolbar />
     </Container>
   );
 }

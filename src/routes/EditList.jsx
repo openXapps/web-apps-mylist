@@ -5,18 +5,12 @@ import { useLiveQuery } from 'dexie-react-hooks';
 // MUI Components
 import Container from '@mui/material/Container';
 import Toolbar from '@mui/material/Toolbar';
-import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 import Select from '@mui/material/Select';
 import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
-// import List from '@mui/material/List';
-// import ListItem from '@mui/material/ListItem';
-// import ListItemText from '@mui/material/ListItemText';
-// import Divider from '@mui/material/Divider';
 
 // MUI Icons
 import SaveIcon from '@mui/icons-material/Save';
@@ -175,47 +169,27 @@ export default function EditList() {
           onClick={(e) => handleItemEditButtons(e, 'clear')}
         ><ClearIcon /></IconButton>
       </Box>
-      {items && items.map(item => {
-        return (
-          <ListItemComponent
-            key={item.id}
-            mode='EDIT'
-            url={''}
-            itemId={item.id}
-            itemName={item.itemName}
-            itemDone={item.done}
-            handleItemClick={() => {}}
-            handleItemActionButtons={handleItemActionButtons}
-          />
-        );
-      })}
-      {/* <Paper sx={{ mt: 1, px: 1 }}>
+      <Box sx={{ mt: 1 }}>
         {items && items.map(item => {
           return (
-            <Box key={item.id}>{item.itemName}
-              <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', flexWrap: false }}>
-                <Typography >{item.itemName}</Typography>
-                <Box>
-                  <IconButton
-                    aria-label="delete"
-                    color="warning"
-                    onClick={() => handleItemActionButtons('delete', parseInt(item.id))}
-                  ><DeleteIcon /></IconButton>
-                  <IconButton
-                    aria-label="edit"
-                    onClick={() => handleItemActionButtons('edit', parseInt(item.id))}
-                  ><EditIcon /></IconButton>
-                </Box>
-              </Box>
-            </Box>
+            <ListItemComponent
+              key={item.id}
+              mode='EDIT'
+              url=''
+              itemId={item.id}
+              itemName={item.itemName}
+              itemDone={item.done}
+              handleItemClick={() => { }}
+              handleItemActionButtons={handleItemActionButtons}
+            />
           );
         })}
-      </Paper> */}
+      </Box>
       <Box sx={{ display: 'flex', flexDirection: 'row', mt: 1 }}>
         <Button
           fullWidth
           variant="outlined"
-          color="warning"
+          color="error"
           onClick={handleListDeleteButton}
         >DELETE ENTIRE LIST</Button>
         <Button
@@ -225,7 +199,7 @@ export default function EditList() {
           onClick={() => rrNavigate(-1)}
         >BACK TO HOME PAGE</Button>
       </Box>
-      <Toolbar sx={{mb:2}}/>
+      <Toolbar />
     </Container >
   );
 }

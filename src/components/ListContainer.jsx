@@ -8,10 +8,6 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
-// import List from '@mui/material/List';
-// import ListItem from '@mui/material/ListItem';
-// import ListItemButton from '@mui/material/ListItemButton';
-// import ListItemText from '@mui/material/ListItemText';
 import IconButton from '@mui/material/IconButton';
 
 // MUI Icons
@@ -19,8 +15,6 @@ import EditIcon from '@mui/icons-material/Edit';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
-// import CheckIcon from '@mui/icons-material/Check';
-// import GoogleIcon from '@mui/icons-material/Google';
 
 // App Specific
 import ListItemComponent from '../components/ListItemComponent';
