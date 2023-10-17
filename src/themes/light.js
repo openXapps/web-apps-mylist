@@ -1,13 +1,13 @@
 const light = {
-  components: {
-    MuiCssBaseline: {
-      styleOverrides: {
-        body: {
-          background: 'linear-gradient(145deg, #FFF5CC, #414427) no-repeat fixed',
-        },
-      },
-    },
-  },
+  // components: {
+  //   MuiCssBaseline: {
+  //     styleOverrides: {
+  //       body: {
+  //         background: 'linear-gradient(145deg, #FFF5CC, #414427) no-repeat fixed',
+  //       },
+  //     },
+  //   },
+  // },
   palette: {
     mode: 'light',
     // primary: {
