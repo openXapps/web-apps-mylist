@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLiveQuery } from 'dexie-react-hooks';
 
 // MUI Components
 import Container from '@mui/material/Container';
@@ -18,6 +19,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import { AppContext } from '../context/AppStore';
 import { listTypes, inputFieldProps } from '../services/dbops';
 import ListItemComponent from '../components/ListItemComponent';
+import BottomSpacer from '../components/BottomSpacer';
 
 export default function NewList() {
   const rrNavigate = useNavigate();
@@ -25,7 +27,7 @@ export default function NewList() {
   const refItemNameInput = useRef(null);
   const [{ db }] = useContext(AppContext);
   const [listId, setListId] = useState(0);
-  const [items, setItems] = useState([]);
+  const items = useLiveQuery(() => db.item.where('listId').equals(listId ? parseInt(listId, 10) : 0).reverse().toArray(), [listId]);
   const [listName, setListName] = useState('');
   const [listType, setListType] = useState(0);
   const [itemName, setItemName] = useState('');
@@ -56,7 +58,6 @@ export default function NewList() {
           listType: parseInt(listType, 10)
         }).then(newListId => {
           setListId(parseInt(newListId, 10));
-          // console.log('set focus to item');
           refItemNameInput.current.focus();
         });
       }
@@ -65,14 +66,9 @@ export default function NewList() {
 
   const handleItemSubmit = (e) => {
     e.preventDefault();
-    if (refItemNameInput.current.value !== '') {
+    if (refItemNameInput.current.value !== '' && listId > 0) {
       db.item.add({ listId: listId, itemName: itemName.trim(), done: false })
         .then(newItemId => {
-          setItems(prevState => {
-            let a = prevState;
-            a.unshift({ id: newItemId, itemName: itemName });
-            return a;
-          });
           setItemName('');
           refItemNameInput.current.focus();
         });
@@ -82,31 +78,33 @@ export default function NewList() {
   return (
     <Container maxWidth="sm">
       <Toolbar />
-      <Box
-        sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', mt: 2 }}
-        component="form"
-        noValidate
-        autoComplete="off"
-        onSubmit={e => handleListSubmit(e)}
-      >
-        <TextField
-          inputRef={refListNameInput}
-          fullWidth
-          label="List Name"
-          size="small"
-          value={listName}
-          onChange={e => {
-            e.currentTarget.value.length <= inputFieldProps.listName.maxLength &&
-              setListName(e.currentTarget.value)
-          }}
-        />
+      <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', mt: 2 }} >
+        <Box
+          flexGrow={1}
+          component="form"
+          noValidate
+          autoComplete="off"
+          onSubmit={e => handleListSubmit(e)}
+        >
+          <TextField
+            inputRef={refListNameInput}
+            fullWidth
+            label="List Name"
+            size="small"
+            value={listName}
+            onChange={e => {
+              e.currentTarget.value.length <= inputFieldProps.listName.maxLength &&
+                setListName(e.currentTarget.value)
+            }}
+          />
+        </Box>
         <Select
           sx={{ ml: 0.5 }}
           size="small"
           value={listType}
           onChange={e => setListType(parseInt(e.target.value, 10))}
         >{listTypes.map(v => (
-          <MenuItem key={v.value} value={v.value}>{v.label}</MenuItem>
+          <MenuItem key={v.index} value={v.index}>{v.label}</MenuItem>
         ))}
         </Select>
         <IconButton
@@ -169,7 +167,7 @@ export default function NewList() {
           onClick={() => rrNavigate(-1)}
         >BACK TO HOME PAGE</Button>
       </Box>
-      <Toolbar />
+      <BottomSpacer />
     </Container>
   );
 }

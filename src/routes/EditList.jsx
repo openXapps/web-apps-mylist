@@ -21,6 +21,7 @@ import { AppContext } from '../context/AppStore';
 import { getItem } from '../services/utilities';
 import { listTypes, inputFieldProps } from '../services/dbops';
 import ListItemComponent from '../components/ListItemComponent';
+import BottomSpacer from '../components/BottomSpacer';
 
 export default function EditList() {
   // const smallScreen = useMediaQuery(theme => theme.breakpoints.down('sm'));
@@ -131,7 +132,7 @@ export default function EditList() {
           value={listType}
           onChange={e => setListType(parseInt(e.target.value, 10))}
         >{listTypes.map(v => (
-          <MenuItem key={v.value} value={v.value}>{v.label}</MenuItem>
+          <MenuItem key={v.index} value={v.index}>{v.label}</MenuItem>
         ))}
         </Select>
         <IconButton
@@ -199,7 +200,7 @@ export default function EditList() {
           onClick={() => rrNavigate(-1)}
         >BACK TO HOME PAGE</Button>
       </Box>
-      <Toolbar />
+      <BottomSpacer />
     </Container >
   );
 }

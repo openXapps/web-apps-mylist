@@ -3,7 +3,7 @@ const dark = {
     MuiCssBaseline: {
       styleOverrides: {
         body: {
-          background: 'linear-gradient(145deg, #82838A, #15151C) no-repeat fixed', // Deep Space
+          background: 'linear-gradient(145deg, #57575c, #0c0c0d) no-repeat fixed',
         },
       },
     },

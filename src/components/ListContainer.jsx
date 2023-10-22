@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLiveQuery } from 'dexie-react-hooks';
 import Dexie from 'dexie';
+import { useTheme } from '@mui/material/styles';
 
 // MUI Components
 import Box from '@mui/material/Box';
@@ -23,6 +24,7 @@ import { listTypes } from '../services/dbops';
 
 function ListContainer() {
   const [{ db }] = useContext(AppContext); // destructure db out of state
+  const theme = useTheme();
   const lists = useLiveQuery(() => db.list.toArray(), []);
   const items = useLiveQuery(() => db.item.toArray(), []);
   const rrNavigate = useNavigate();
@@ -52,8 +54,9 @@ function ListContainer() {
         let countOf = items.filter(e => e.listId === list.id).length;
         return (
           <Box key={list.id} sx={{ mt: 1 }}>
+            <Typography variant="caption">{`${listTypes[list.listType].label}: (${countDone}/${countOf})`}</Typography>
             <Stack direction="row" alignItems="center" justifyContent="space-between">
-              <Typography>{`${listTypes[list.listType].label}: ${list.listName} (${countDone}/${countOf})`}</Typography>
+              <Typography noWrap color={list.inUse ? theme.palette.primary.main : theme.palette.text.disabled}>{list.listName}</Typography>
               <Box sx={{ display: 'flex', flexWrap: false }}>
                 <IconButton onClick={() => handleResetListClick(list.id)}><RestartAltIcon /></IconButton>
                 <IconButton

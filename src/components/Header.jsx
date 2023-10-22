@@ -1,4 +1,4 @@
-import { useState } from 'react';
+// import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 // MUI Components
@@ -7,17 +7,17 @@ import Container from '@mui/material/Container';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Box from '@mui/material/Box';
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
+// import MenuItem from '@mui/material/MenuItem';
+// import Menu from '@mui/material/Menu';
 
 // MUI Icons
 import HomeIcon from '@mui/icons-material/Home';
-import MenuIcon from '@mui/icons-material/Menu';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import SettingsIcon from '@mui/icons-material/Settings';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+// import MenuIcon from '@mui/icons-material/Menu';
+// import SettingsIcon from '@mui/icons-material/Settings';
 
 // App Specific
 import { env } from '../services/environment';
@@ -26,7 +26,7 @@ function Header() {
   const rrNavigate = useNavigate();
   const rrLocation = useLocation();
   const smallScreen = useMediaQuery(theme => theme.breakpoints.down('sm'));
-  const [anchorEl, setAnchorEl] = useState(null);
+  // const [anchorEl, setAnchorEl] = useState(null);
 
   const handleHomeButton = () => {
     if (rrLocation.pathname !== '/') {
@@ -36,18 +36,18 @@ function Header() {
     }
   };
 
-  const handleMenuToggle = (e) => {
-    setAnchorEl(e.currentTarget);
-  };
+  // const handleMenuToggle = (e) => {
+  //   setAnchorEl(e.currentTarget);
+  // };
 
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
+  // const handleMenuClose = () => {
+  //   setAnchorEl(null);
+  // };
 
-  const handleMenuRoutes = (e) => {
-    handleMenuClose();
-    rrNavigate(`/${e.currentTarget.dataset.name}`);
-  };
+  // const handleMenuRoutes = (e) => {
+  //   handleMenuClose();
+  //   rrNavigate(`/${e.currentTarget.dataset.name}`);
+  // };
 
   return (
     <AppBar color="inherit">
@@ -67,7 +67,7 @@ function Header() {
                 color="inherit"
                 onClick={() => { rrNavigate('/new') }}
               ><AddCircleIcon /></IconButton>
-              <IconButton
+              {/* <IconButton
                 color="inherit"
                 onClick={() => { rrNavigate('/settings') }}
               ><SettingsIcon /></IconButton>
@@ -89,7 +89,7 @@ function Header() {
                 <MenuItem onClick={handleMenuRoutes} data-name='settings'>Settings</MenuItem>
                 <MenuItem onClick={handleMenuRoutes} data-name='download'>Backup Data</MenuItem>
                 <MenuItem onClick={handleMenuRoutes} data-name='upload'>Restore Data</MenuItem>
-              </Menu>
+              </Menu> */}
             </Box>
           ) : (null)}
         </Toolbar>

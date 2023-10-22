@@ -35,8 +35,8 @@ export const inputFieldProps = {
  * Type of lists
  */
 export const listTypes = [
-  { value: 0, label: 'Shopping' },
-  { value: 1, label: 'ToDo' }
+  { index: 0, label: 'Shopping' },
+  { index: 1, label: 'ToDo' }
 ];
 
 /**
