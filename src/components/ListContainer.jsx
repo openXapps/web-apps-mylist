@@ -22,15 +22,15 @@ import ListItemComponent from '../components/ListItemComponent';
 import { AppContext } from '../context/AppStore';
 import { listTypes } from '../services/dbops';
 
-function ListContainer() {
+export default function ListContainer() {
   const [{ db }] = useContext(AppContext); // destructure db out of state
   const theme = useTheme();
   const lists = useLiveQuery(() => db.list.toArray(), []);
-  const items = useLiveQuery(() => db.item.toArray(), []);
+  const items = useLiveQuery(() => db.item.orderBy('itemOrder').toArray(), []);
   const rrNavigate = useNavigate();
 
   const handleItemClick = (itemId, state) => {
-    db.item.update(itemId, { 'done': !state });
+    db.item.update(itemId, { 'done': !state, itemOrder: !state ? 100 : 1 });
   };
 
   const handleShowHideListClick = (listId, state) => {
@@ -39,7 +39,7 @@ function ListContainer() {
 
   const handleResetListClick = (listId) => {
     db.transaction("rw", db.item, () => {
-      db.item.where('listId').equals(listId).modify({ done: false });
+      db.item.where('listId').equals(listId).modify({ done: false, itemOrder: 1 });
     }).catch(Dexie.ModifyError, error => {
       console.error(error.failures.length + ' items failed to modify');
     }).catch(error => {
@@ -79,28 +79,11 @@ function ListContainer() {
                   itemDone={item.done}
                   handleItemClick={handleItemClick}
                 />
-                //   <Stack key={item.id} direction="row" alignItems="center">
-                //     <IconButton
-                //       href={url}
-                //       target="_blank"
-                //       rel="noopener"
-                //     ><GoogleIcon color="disabled" /></IconButton>
-                //     <ListItem disableGutters disablePadding>
-                //       <ListItemButton onClick={() => handleItemClick(item.id, item.done)}>
-                //         <ListItemText primary={item.itemName} primaryTypographyProps={{ variant: 'h6' }} />
-                //         <Box ml={1}><CheckIcon color={item.done ? 'warning' : 'disabled'} /></Box>
-                //       </ListItemButton>
-                //     </ListItem>
-                //   </Stack>
               );
-            })
-              // </List>
-            ) : (<Divider />)}
+            })) : (<Divider />)}
           </Box>
         );
       })}
     </>
   );
 }
-
-export default ListContainer;

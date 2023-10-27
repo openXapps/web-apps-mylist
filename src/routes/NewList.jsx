@@ -67,7 +67,7 @@ export default function NewList() {
   const handleItemSubmit = (e) => {
     e.preventDefault();
     if (refItemNameInput.current.value !== '' && listId > 0) {
-      db.item.add({ listId: listId, itemName: itemName.trim(), done: false })
+      db.item.add({ listId: listId, itemName: itemName.trim(), itemOrder: 1, done: false })
         .then(newItemId => {
           setItemName('');
           refItemNameInput.current.focus();

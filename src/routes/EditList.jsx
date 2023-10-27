@@ -81,7 +81,7 @@ export default function EditList() {
       }
       // New action
       if (itemId === 0 && action === 'submit') {
-        db.item.add({ listId: parseInt(listId, 10), itemName: itemName.trim(), done: false })
+        db.item.add({ listId: parseInt(listId, 10), itemName: itemName.trim(), itemOrder: 1, done: false })
           .then(id => {
             setItemName('');
             setItemId(0);
