@@ -73,7 +73,7 @@ export default function EditList() {
     if (refItemNameInput.current.value !== '') {
       // Save action
       if (itemId > 0) {
-        db.item.update(itemId, { itemName: itemName.trim() })
+        db.item.update(itemId, { itemName: itemName.trim(), itemOrder: 1 })
           .then(id => {
             setItemName('');
             setItemId(0);
