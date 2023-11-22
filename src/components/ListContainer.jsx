@@ -56,7 +56,11 @@ export default function ListContainer() {
           <Box key={list.id} sx={{ mt: 1 }}>
             <Typography variant="caption">{`${listTypes[list.listType].label}: (${countDone}/${countOf})`}</Typography>
             <Stack direction="row" alignItems="center" justifyContent="space-between">
-              <Typography noWrap color={list.inUse ? theme.palette.primary.main : theme.palette.text.disabled}>{list.listName}</Typography>
+              <Typography
+                noWrap
+                color={list.inUse ? theme.palette.primary.main : theme.palette.text.disabled}
+                variant="h6"
+              >{list.listName}</Typography>
               <Box sx={{ display: 'flex', flexWrap: false }}>
                 <IconButton onClick={() => handleResetListClick(list.id)}><RestartAltIcon /></IconButton>
                 <IconButton
