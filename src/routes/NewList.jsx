@@ -159,7 +159,7 @@ export default function NewList() {
           );
         })}
       </Box>
-      <Box sx={{ display: 'flex', flexDirection: 'row', mt: 1 }}>
+      <Box sx={{ display: 'flex', flexDirection: 'row', mt: 2 }}>
         <Button
           area-label="back button"
           fullWidth

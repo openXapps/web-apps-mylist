@@ -186,7 +186,7 @@ export default function EditList() {
           );
         })}
       </Box>
-      <Box sx={{ display: 'flex', flexDirection: 'row', mt: 1 }}>
+      <Box sx={{ display: 'flex', flexDirection: 'row', mt: 2 }}>
         <Button
           fullWidth
           variant="outlined"
