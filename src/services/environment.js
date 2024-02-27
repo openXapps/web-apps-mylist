@@ -9,6 +9,7 @@
  */
 
 export const env = {
+    NAME: process.env.REACT_APP_NAME,
     VERSION: process.env.REACT_APP_VERSION,
     RESET_IDB: process.env.NODE_ENV === 'development' ? true : false,
 };

@@ -13,6 +13,11 @@ const AppContextReducer = (state, action) => {
         ...state,
         themeIsDark: action.payload
       };
+    case 'ROUTE':
+      return {
+        ...state,
+        routePath: action.payload
+      };
     case 'SEARCH':
       return {
         ...state,

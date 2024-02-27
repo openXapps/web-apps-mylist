@@ -4,7 +4,6 @@ import { useLiveQuery } from 'dexie-react-hooks';
 
 // MUI Components
 import Container from '@mui/material/Container';
-import Toolbar from '@mui/material/Toolbar';
 import Box from '@mui/material/Box';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
@@ -26,16 +25,21 @@ import BottomSpacer from '../components/BottomSpacer';
 export default function EditList() {
   // const smallScreen = useMediaQuery(theme => theme.breakpoints.down('sm'));
   const rrNavigate = useNavigate();
+  const { listId } = useParams();
   // const refListNameInput = useRef(null);
   const refItemNameInput = useRef(null);
-  const { listId } = useParams();
-  const [{ db }] = useContext(AppContext);
+  const [{ db }, appDispatch] = useContext(AppContext);
   const lists = useLiveQuery(() => db.list.where('id').equals(listId ? parseInt(listId, 10) : 0).toArray(), [listId]);
   const items = useLiveQuery(() => db.item.where('listId').equals(listId ? parseInt(listId, 10) : 0).reverse().toArray(), [listId]);
   const [listName, setListName] = useState('');
   const [listType, setListType] = useState(0);
   const [itemName, setItemName] = useState('');
   const [itemId, setItemId] = useState(0);
+
+  useEffect(() => {
+    appDispatch({ type: 'ROUTE', payload: 'Edit List' });
+    return () => true;
+  }, [appDispatch]);
 
   useEffect(() => {
     if (Array.isArray(lists)) {
@@ -113,7 +117,6 @@ export default function EditList() {
 
   return (
     <Container maxWidth="sm">
-      <Toolbar />
       <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', mt: 2 }}>
         <TextField
           fullWidth

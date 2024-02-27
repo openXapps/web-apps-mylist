@@ -41,7 +41,7 @@ export default function ListItemComponent(props) {
         ><GoogleIcon color="disabled" /></IconButton>
       }
       <Button
-        sx={{ flexGrow: 1, mx: 0.5 }}
+        sx={{ flexGrow: 1, mx: 0.5, textTransform: 'none' }}
         color="warning"
         disabled={itemDone}
         onClick={(e) => {

@@ -3,6 +3,7 @@ import Dexie from 'dexie';
 
 import AppContextReducer from './AppReducer';
 import { dbStores, initLoad } from '../services/dbops';
+import { env } from '../services/environment';
 
 // https://reactjs.org/docs/context.html
 
@@ -25,6 +26,7 @@ initLoad(db);
 
 // Set initial application context
 const contextData = {
+  routePath: env.NAME,
   themeIsDark: true,
   db: db
 };

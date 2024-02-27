@@ -4,7 +4,6 @@ import { useLiveQuery } from 'dexie-react-hooks';
 
 // MUI Components
 import Container from '@mui/material/Container';
-import Toolbar from '@mui/material/Toolbar';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Select from '@mui/material/Select';
@@ -25,12 +24,17 @@ export default function NewList() {
   const rrNavigate = useNavigate();
   const refListNameInput = useRef(null);
   const refItemNameInput = useRef(null);
-  const [{ db }] = useContext(AppContext);
+  const [{ db }, appDispatch] = useContext(AppContext);
   const [listId, setListId] = useState(0);
   const items = useLiveQuery(() => db.item.where('listId').equals(listId ? parseInt(listId, 10) : 0).reverse().toArray(), [listId]);
   const [listName, setListName] = useState('');
   const [listType, setListType] = useState(0);
   const [itemName, setItemName] = useState('');
+
+  useEffect(() => {
+    appDispatch({ type: 'ROUTE', payload: 'New List' });
+    return () => true;
+  }, [appDispatch]);
 
   useEffect(() => {
     refListNameInput.current.focus();
@@ -77,7 +81,6 @@ export default function NewList() {
 
   return (
     <Container maxWidth="sm">
-      <Toolbar />
       <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', mt: 2 }} >
         <Box
           flexGrow={1}

@@ -1,6 +1,10 @@
-// import { useContext } from 'react';
-import { useContext } from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useContext } from 'react';
+import {
+  RouterProvider,
+  createBrowserRouter,
+  createRoutesFromElements,
+  Route,
+} from 'react-router-dom';
 
 // Material UI
 import CssBaseline from '@mui/material/CssBaseline';
@@ -13,8 +17,7 @@ import light from '../themes/light';
 import dark from '../themes/dark';
 
 // App routes
-import Header from '../components/Header';
-// import Footer from '../components/Footer';
+import Layout from './Layout';
 import Home from './Home';
 import EditList from './EditList';
 import NewList from './NewList';
@@ -23,30 +26,28 @@ import Download from './Download';
 import Upload from './Upload';
 import NoPage from './NoPage';
 
-function App() {
+export default function App() {
   const [appState] = useContext(AppContext);
   const appTheme = createTheme(appState.themeIsDark ? dark : light);
   // const home = '/';
   const home = '/apps/mylist';
 
+  const router = createBrowserRouter(createRoutesFromElements(
+    <Route path="/" element={<Layout />}>
+      <Route index element={<Home />} />
+      <Route path="edit/:listId" element={<EditList />} />
+      <Route path="new" element={<NewList />} />
+      <Route path="settings" element={<Settings />} />
+      <Route path="download" element={<Download />} />
+      <Route path="upload" element={<Upload />} />
+      <Route path="*" element={<NoPage />} />
+    </Route >
+  ), { basename: home });
+
   return (
     <ThemeProvider theme={appTheme}>
       <CssBaseline />
-      <BrowserRouter basename={home}>
-        <Header />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/edit/:listId" element={<EditList />} />
-          <Route path="/new" element={<NewList />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/download" element={<Download />} />
-          <Route path="/upload" element={<Upload />} />
-          <Route path="*" element={<NoPage />} />
-        </Routes>
-        {/* <Footer /> */}
-      </BrowserRouter>
+      <RouterProvider router={router} />
     </ThemeProvider>
   );
 }
-
-export default App;
