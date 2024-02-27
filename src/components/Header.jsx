@@ -58,7 +58,8 @@ function Header() {
               sx={{ mr: 1 }}
               aria-label="back button"
               color="inherit"
-              onClick={() => rrNavigate('/', { replace: true })}
+              // onClick={() => rrNavigate('/', { replace: true })}
+              onClick={() => rrNavigate(-1)}
             ><ArrowBackIcon /></IconButton>
           )}
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
